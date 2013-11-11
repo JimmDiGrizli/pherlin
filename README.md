@@ -13,6 +13,6 @@ The main features of the component:
 Requirements:
 * PHP 5.4
 * Phalcon Framework
-* getsky/phalcon-autoload-di (https://github.com/JimmDiGrizli/phalcon-autoload-di)
+* getsky/phalcon-bootstrap (https://github.com/JimmDiGrizli/phalcon-bootstrap)
 
 Phalcon framework: http://phalconphp.com/
