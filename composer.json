@@ -1,0 +1,25 @@
+{
+    "name": "GetSky/phalcon-skeleton",
+    "description": "Skeleton for develop Phalcon applications",
+
+    "authors": [
+        {
+            "name": "jimmdigrizli",
+            "email": "getmansk-y@yandex.ru"
+        }
+    ],
+    "require": {
+        "getsky/phalcon-bootstrap": "1.0.x"
+    },
+    "minimum-stability": "dev",
+    "repositories":[
+        {
+            "type":"git",
+            "url":"http://github.com/JimmDiGrizli/phalcon-bootstrap"
+        },
+        {
+            "type":"git",
+            "url":"http://github.com/JimmDiGrizli/phalcon-autoload-services"
+        }
+    ]
+}
