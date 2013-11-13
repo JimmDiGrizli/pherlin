@@ -1,3 +1,4 @@
 /app/var/*
 /vendor/
 /composer.lock
+/app/environment/*/cache/

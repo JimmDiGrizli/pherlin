@@ -32,6 +32,11 @@ class Module implements ModuleDefinitionInterface {
      */
     public function registerServices($dependencyInjector)
     {
+        $dependencyInjector->setShared(
+            'module-options',
+            new Ini('/Resources/config/options.ini')
+        );
+
         /**
          * @var Registrant $registrant
          */
