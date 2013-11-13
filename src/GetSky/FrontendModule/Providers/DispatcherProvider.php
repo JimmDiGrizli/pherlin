@@ -7,7 +7,7 @@ use Phalcon\Mvc\Dispatcher;
 class DispatcherProvider implements Provider {
 
     /**
-     * @return mixed
+     * @return callable
      */
     public function getServices()
     {

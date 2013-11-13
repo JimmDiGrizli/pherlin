@@ -13,6 +13,11 @@ class ViewProvider implements Provider
      */
     private $options;
 
+    /**
+     * @var Config
+     */
+    private $appStatus;
+
     public function __construct(Config $options, Config $appStatus)
     {
         $this->options = $options;
@@ -20,7 +25,7 @@ class ViewProvider implements Provider
     }
 
     /**
-     * @return mixed
+     * @return callable
      */
     public function getServices()
     {
