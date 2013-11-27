@@ -11,20 +11,14 @@ use Phalcon\Config;
 
 class ViewCacheProvider implements Provider
 {
-
-    /**
-     * @var Config
-     */
-    private $moduleOptions;
     /**
      * @var Config
      */
     private $options;
 
-    public function __construct(Config $moduleOptions, Config $options)
+    public function __construct(Config $options)
     {
         $this->options = $options;
-        $this->moduleOptions = $moduleOptions;
     }
 
     /**
@@ -32,8 +26,10 @@ class ViewCacheProvider implements Provider
      */
     public function getServices()
     {
-        $config = $this->moduleOptions->get('volt');
-        print_r($this->options);
+        /**
+         * @var Config $config
+         */
+        $config = $this->options->get('module-options')->get('volt');
         $environment = $this->options->get('app-status')->get('environment');
 
         return function () use ($config, $environment) {

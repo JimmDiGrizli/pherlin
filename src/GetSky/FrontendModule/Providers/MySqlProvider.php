@@ -22,7 +22,7 @@ class MySqlProvider implements Provider
      */
     public function getServices()
     {
-        $option = $this->options->get('mysql');
+        $option = $this->options->get('module-options')->get('mysql');
 
         return function () use ($option) {
             $mysql = new Mysql(array(

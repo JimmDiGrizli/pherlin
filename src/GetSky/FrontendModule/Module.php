@@ -2,6 +2,7 @@
 namespace GetSky\FrontendModule;
 
 use Phalcon\Config\Adapter\Ini;
+use Phalcon\Config;
 use Phalcon\Loader;
 use Phalcon\Mvc\ModuleDefinitionInterface;
 use GetSky\Phalcon\AutoloadServices\Registrant;
@@ -32,10 +33,19 @@ class Module implements ModuleDefinitionInterface {
      */
     public function registerServices($dependencyInjector)
     {
-        $dependencyInjector->setShared(
-            'module-options',
-            new Ini('/Resources/config/options.ini')
+        /**
+         * @var Config $options
+         */
+        $options = $dependencyInjector->get('options');
+
+        $options->merge(
+            new Config(
+                array(
+                    'module-options' => new Ini('/Resources/config/options.ini')
+                )
+            )
         );
+        $dependencyInjector->setShared('options',$options);
 
         /**
          * @var Registrant $registrant
