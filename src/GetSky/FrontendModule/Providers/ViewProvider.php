@@ -11,17 +11,16 @@ class ViewProvider implements Provider
     /**
      * @var Config
      */
-    private $options;
-
+    private $moduleOptions;
     /**
      * @var Config
      */
-    private $appStatus;
+    private $options;
 
-    public function __construct(Config $options, Config $appStatus)
+    public function __construct(Config $moduleOptions, Config $options)
     {
+        $this->moduleOptions = $moduleOptions;
         $this->options = $options;
-        $this->appStatus = $appStatus;
     }
 
     /**
@@ -33,8 +32,10 @@ class ViewProvider implements Provider
             $view = new View();
             $view->setViewsDir(__DIR__ . '/../Resources/views/');
 
-            $config = $this->options->get('volt');
-            $environment = $this->appStatus->get('environment');
+            $config = $this->moduleOptions->get('volt');
+            $environment = $this->options->get('app-status')->get(
+                'environment'
+            );
 
             $view->registerEngines(
                 array(

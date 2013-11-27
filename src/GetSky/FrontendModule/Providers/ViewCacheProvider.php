@@ -15,16 +15,16 @@ class ViewCacheProvider implements Provider
     /**
      * @var Config
      */
-    private $options;
+    private $moduleOptions;
     /**
      * @var Config
      */
-    private $appStatus;
+    private $options;
 
-    public function __construct(Config $options, Config $appStatus)
+    public function __construct(Config $moduleOptions, Config $options)
     {
         $this->options = $options;
-        $this->appStatus = $appStatus;
+        $this->moduleOptions = $moduleOptions;
     }
 
     /**
@@ -32,8 +32,9 @@ class ViewCacheProvider implements Provider
      */
     public function getServices()
     {
-        $config = $this->options->get('volt');
-        $environment = $this->appStatus->get('environment');
+        $config = $this->moduleOptions->get('volt');
+        print_r($this->options);
+        $environment = $this->options->get('app-status')->get('environment');
 
         return function () use ($config, $environment) {
 
