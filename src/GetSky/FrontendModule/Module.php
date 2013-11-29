@@ -1,57 +1,11 @@
 <?php
 namespace GetSky\FrontendModule;
 
-use Phalcon\Config\Adapter\Ini;
 use Phalcon\Config;
 use Phalcon\Loader;
-use Phalcon\Mvc\ModuleDefinitionInterface;
-use GetSky\Phalcon\AutoloadServices\Registrant;
+use \GetSky\Phalcon\Bootstrap\Module  as ModuleBootstrap;
 
-class Module implements ModuleDefinitionInterface {
-
-    /**
-     * Registers an autoloader related to the module
-     *
-     */
-    public function registerAutoloaders()
-    {
-        $loader = new Loader();
-
-        $loader->registerNamespaces(
-            array(
-                'GetSky\FrontendModule' => '../src/GetSky/FrontendModule/'
-            )
-        );
-
-        $loader->register();
-    }
-
-    /**
-     * Registers an autoloader related to the module
-     *
-     * @param \Phalcon\DiInterface $dependencyInjector
-     */
-    public function registerServices($dependencyInjector)
-    {
-        /**
-         * @var Config $options
-         */
-        $options = $dependencyInjector->get('options');
-
-        $options->merge(
-            new Config(
-                array(
-                    'module-options' => new Ini('/Resources/config/options.ini')
-                )
-            )
-        );
-        $dependencyInjector->setShared('options',$options);
-
-        /**
-         * @var Registrant $registrant
-         */
-        $registrant = $dependencyInjector->get('registrant');
-        $registrant->setServices(new Ini('/Resources/config/services.ini'));
-        $registrant->registration();
-    }
+class Module extends ModuleBootstrap
+{
+    protected $dir = __DIR__;
 }
