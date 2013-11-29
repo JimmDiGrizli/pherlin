@@ -1,9 +1,9 @@
 <?php
 namespace GetSky\FrontendModule;
 
+use GetSky\Phalcon\Bootstrap\Module as ModuleBootstrap;
 use Phalcon\Config;
 use Phalcon\Loader;
-use \GetSky\Phalcon\Bootstrap\Module  as ModuleBootstrap;
 
 class Module extends ModuleBootstrap
 {

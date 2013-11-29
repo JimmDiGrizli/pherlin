@@ -12,14 +12,14 @@
         "getsky/phalcon-bootstrap": "1.0.x"
     },
     "minimum-stability": "dev",
-    "repositories":[
+    "repositories": [
         {
-            "type":"git",
-            "url":"http://github.com/JimmDiGrizli/phalcon-bootstrap"
+            "type": "git",
+            "url": "http://github.com/JimmDiGrizli/phalcon-bootstrap"
         },
         {
-            "type":"git",
-            "url":"http://github.com/JimmDiGrizli/phalcon-autoload-services"
+            "type": "git",
+            "url": "http://github.com/JimmDiGrizli/phalcon-autoload-services"
         }
     ]
 }

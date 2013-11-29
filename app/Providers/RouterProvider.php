@@ -37,14 +37,17 @@ class RouterProvider implements Provider
                     continue;
                 }
 
-                $router->add('#^/'.$name.'(|/)$#', array(
+                $router->add(
+                    '#^/' . $name . '(|/)$#',
+                    array(
                         'module' => $name,
                         'controller' => 'index',
                         'action' => 'index',
-                    ));
+                    )
+                );
 
                 $router->add(
-                    '#^/'.$name.'/([a-zA-Z0-9\_]+)[/]{0,1}$#',
+                    '#^/' . $name . '/([a-zA-Z0-9\_]+)[/]{0,1}$#',
                     array(
                         'module' => $name,
                         'controller' => 1,
@@ -52,7 +55,7 @@ class RouterProvider implements Provider
                 );
 
                 $router->add(
-                    '#^/'.$name.'[/]{0,1}([a-zA-Z0-9\_]+)/([a-zA-Z0-9\_]+)(/.*)*$#',
+                    '#^/' . $name . '[/]{0,1}([a-zA-Z0-9\_]+)/([a-zA-Z0-9\_]+)(/.*)*$#',
                     array(
                         'module' => $name,
                         'controller' => 1,

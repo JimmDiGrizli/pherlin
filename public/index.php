@@ -4,7 +4,7 @@ error_reporting(E_ALL);
 require_once '../vendor/autoload.php';
 
 use GetSky\Phalcon\Bootstrap\Bootstrap;
-use \Phalcon\DI\FactoryDefault;
+use Phalcon\DI\FactoryDefault;
 
 try {
     $app = new Bootstrap(new FactoryDefault());
