@@ -2,6 +2,7 @@
 namespace GetSky\FrontendModule\Providers;
 
 use GetSky\Phalcon\AutoloadServices\Provider;
+use PDO;
 use Phalcon\Config;
 use Phalcon\Db\Adapter\Pdo\Mysql;
 
@@ -25,16 +26,16 @@ class MySqlProvider implements Provider
         $option = $this->options->get('module-options')->get('mysql');
 
         return function () use ($option) {
-            $mysql = new Mysql(array(
-                "host" => $option->host,
-                "username" => $option->username,
-                "password" => $option->password,
-                "persistent" => $option->persistent,
-                "dbname" => $option->name,
-                "options" => array(
-                    \PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'
+            $mysql = new Mysql([
+                'host' => $option->host,
+                'username' => $option->username,
+                'password' => $option->password,
+                'persistent' => $option->persistent,
+                'dbname' => $option->name,
+                'options' => array(
+                    PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'
                 )
-            ));
+            ]);
 
             return $mysql;
         };

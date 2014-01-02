@@ -4,6 +4,7 @@ namespace App\Providers;
 use GetSky\Phalcon\AutoloadServices\Provider;
 use Phalcon\Config;
 use Phalcon\Mvc\Router;
+use Phalcon\Mvc\Router as PhRouter;
 
 class RouterProvider implements Provider
 {
@@ -28,7 +29,7 @@ class RouterProvider implements Provider
 
         return function () use ($default, $modules) {
 
-            $router = new \Phalcon\Mvc\Router();
+            $router = new PhRouter();
 
             foreach ($modules as $name => $module) {
 
@@ -39,29 +40,29 @@ class RouterProvider implements Provider
 
                 $router->add(
                     '#^/' . $name . '(|/)$#',
-                    array(
+                    [
                         'module' => $name,
                         'controller' => 'index',
                         'action' => 'index',
-                    )
+                    ]
                 );
 
                 $router->add(
                     '#^/' . $name . '/([a-zA-Z0-9\_]+)[/]{0,1}$#',
-                    array(
+                    [
                         'module' => $name,
                         'controller' => 1,
-                    )
+                    ]
                 );
 
                 $router->add(
                     '#^/' . $name . '[/]{0,1}([a-zA-Z0-9\_]+)/([a-zA-Z0-9\_]+)(/.*)*$#',
-                    array(
+                    [
                         'module' => $name,
                         'controller' => 1,
                         'action' => 2,
                         'params' => 3,
-                    )
+                    ]
                 );
             }
 

@@ -34,38 +34,38 @@ class ViewCacheProvider implements Provider
 
         return function () use ($config, $environment) {
 
-            $ultraFastFrontend = new Data(array("lifetime" => 3600));
-            $fastFrontend = new Data(array("lifetime" => 86400));
-            $slowFrontend = new Data(array("lifetime" => 604800));
+            $ultraFastFrontend = new Data(['lifetime' => 3600]);
+            $fastFrontend = new Data(['lifetime' => 86400]);
+            $slowFrontend = new Data(['lifetime' => 604800]);
 
             $path = str_replace(
-                "{environment}",
+                '{environment}',
                 $environment,
                 $config->get('path')
             );
 
             $cache = new Multiple(
-                array(
+                [
                     new Apc(
                         $ultraFastFrontend,
-                        array("prefix" => 'cache')
+                        ['prefix' => 'cache']
                     ),
                     new Memcache(
                         $fastFrontend,
-                        array(
-                            "prefix" => 'cache',
-                            "host" => $config->get("host"),
-                            "port" => $config->get("port")
-                        )
+                        [
+                            'prefix' => 'cache',
+                            'host' => $config->get('host'),
+                            'port' => $config->get('port')
+                        ]
                     ),
                     new File(
                         $slowFrontend,
-                        array(
-                            "prefix" => 'cache',
-                            "cacheDir" => $path
-                        )
+                        [
+                            'prefix' => 'cache',
+                            'cacheDir' => $path
+                        ]
                     )
-                )
+                ]
             );
 
             return $cache;

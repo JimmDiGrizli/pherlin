@@ -15,7 +15,7 @@ class DispatcherProvider implements Provider
         return function () {
             $dispatcher = new Dispatcher();
             $dispatcher->setDefaultNamespace(
-                "GetSky\\FrontendModule\\Controllers"
+                'GetSky\FrontendModule\Controllers'
             );
             return $dispatcher;
         };

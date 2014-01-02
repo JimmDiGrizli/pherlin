@@ -34,20 +34,20 @@ class ViewProvider implements Provider
             $view->setViewsDir(__DIR__ . '/../Resources/views/');
 
             $view->registerEngines(
-                array(
+                [
                     '.volt' => function ($view) use ($config, $environment) {
                             $volt = new Volt($view);
 
                             $path = str_replace(
-                                "{environment}",
+                                '{environment}',
                                 $environment,
                                 $config->get('path')
                             );
 
-                            $options = array(
+                            $options = [
                                 'compiledPath' => $path,
                                 'compiledSeparator' => '_',
-                            );
+                            ];
 
                             if ($config->debug != 1) {
                                 $options['compileAlways'] = true;
@@ -58,7 +58,7 @@ class ViewProvider implements Provider
                             return $volt;
                         },
                     '.phtml' => 'Phalcon\Mvc\View\Engine\Php'
-                )
+                ]
             );
 
             return $view;
