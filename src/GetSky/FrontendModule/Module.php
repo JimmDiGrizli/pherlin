@@ -5,5 +5,5 @@ use GetSky\Phalcon\Bootstrap\Module as ModuleBootstrap;
 
 class Module extends ModuleBootstrap
 {
-    protected $dir = __DIR__;
+    const DIR = __DIR__;
 }
