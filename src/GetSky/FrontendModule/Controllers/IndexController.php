@@ -14,4 +14,8 @@ class IndexController extends Controller
     {
     }
 
+    public function error404Action()
+    {
+    }
+
 }
