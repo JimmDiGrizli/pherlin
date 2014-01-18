@@ -30,6 +30,7 @@ class RouterProvider implements Provider
         return function () use ($default, $modules) {
 
             $router = new PhRouter();
+            $router->setUriSource(Router::URI_SOURCE_SERVER_REQUEST_URI);
 
             foreach ($modules as $name => $module) {
 
