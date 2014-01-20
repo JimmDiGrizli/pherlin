@@ -1,7 +1,7 @@
 {
     "name": "GetSky/phalcon-skeleton",
     "description": "Skeleton for develop Phalcon applications",
-
+    "keywords": [ "framework", "phalcon", "skeleton" ],
     "authors": [
         {
             "name": "jimmdigrizli",
@@ -9,17 +9,15 @@
         }
     ],
     "require": {
-        "getsky/phalcon-bootstrap": "1.0.x"
+        "getsky/phalcon-bootstrap": "1.1.x"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-develop": "1.1.x-dev"
+        }
     },
     "minimum-stability": "dev",
-    "repositories": [
-        {
-            "type": "git",
-            "url": "http://github.com/JimmDiGrizli/phalcon-bootstrap"
-        },
-        {
-            "type": "git",
-            "url": "http://github.com/JimmDiGrizli/phalcon-autoload-services"
-        }
-    ]
+    "autoload": {
+        "psr-0": { "": "src/" }
+    }
 }
