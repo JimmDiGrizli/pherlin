@@ -1,6 +1,7 @@
 <?php
 namespace GetSky\FrontendModule\Providers;
 
+use Exception;
 use GetSky\Phalcon\AutoloadServices\Provider;
 use Phalcon\Config;
 use Phalcon\Events\Manager;
@@ -32,14 +33,19 @@ class DispatcherProvider implements Provider
             $eventsManager->attach(
                 "dispatch:beforeException",
                 function ($event, $dispatcher, $exception) use ($option) {
+                    /**
+                     * @var $exception Exception
+                     * @var $dispatcher Dispatcher
+                     * @var $option Config
+                     */
                     switch ($exception->getCode()) {
                         case Dispatcher::EXCEPTION_HANDLER_NOT_FOUND:
                         case Dispatcher::EXCEPTION_ACTION_NOT_FOUND:
                             $dispatcher->forward(
-                                array(
+                                [
                                     'controller' => $option->get('controller'),
                                     'action' => $option->get('action')
-                                )
+                                ]
                             );
                             return false;
                     }
