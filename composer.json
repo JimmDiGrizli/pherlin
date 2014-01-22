@@ -18,6 +18,8 @@
     },
     "minimum-stability": "dev",
     "autoload": {
-        "psr-0": { "": "src/" }
+        "psr-4": {
+            "GetSky\\": "src/"
+        }
     }
 }
