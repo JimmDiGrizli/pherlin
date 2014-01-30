@@ -47,8 +47,8 @@ class DispatcherProvider implements Provider
                                     'action' => $option->get('action')
                                 ]
                             );
-                            return false;
                     }
+                    return false;
                 }
             );
 
