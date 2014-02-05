@@ -1,3 +1,5 @@
+/app/environment/*/cache/*/*
+!.gitkeep
 /app/var/*
 /vendor/
 /composer.lock
