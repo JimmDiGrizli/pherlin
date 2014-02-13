@@ -2,6 +2,7 @@
     "name": "getsky/phalcon-skeleton",
     "description": "Skeleton for develop Phalcon applications",
     "keywords": [ "framework", "phalcon", "skeleton" ],
+    "license": "MIT",
     "authors": [
         {
             "name": "jimmdigrizli",
