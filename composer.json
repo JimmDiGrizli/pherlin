@@ -10,7 +10,8 @@
         }
     ],
     "require": {
-        "getsky/phalcon-bootstrap": "1.1.x"
+        "getsky/phalcon-bootstrap": "1.1.x",
+        "ext-phalcon": ">=1.2.4,<2"
     },
     "extra": {
         "branch-alias": {
