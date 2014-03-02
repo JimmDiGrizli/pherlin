@@ -27,26 +27,22 @@ class ViewProvider implements Provider
         /**
          * @var Config $config
          */
-        $config = $this->options->get('module-options')->get('volt');
-        $environment = $this->options->get('app-status')->get('environment');
+        $config = $this->options
+            ->get('module-options')
+            ->get(Module::NAME)
+            ->get('volt');
 
-        return function () use ($config, $environment) {
+        return function () use ($config) {
             $view = new View();
             $view->setViewsDir(Module::DIR . '/Resources/views/');
 
             $view->registerEngines(
                 [
-                    '.volt' => function ($view) use ($config, $environment) {
+                    '.volt' => function ($view) use ($config) {
                             $volt = new Volt($view);
 
-                            $path = str_replace(
-                                '{environment}',
-                                $environment,
-                                $config->get('path')
-                            );
-
                             $options = [
-                                'compiledPath' => $path,
+                                'compiledPath' => $config->get('path'),
                                 'compiledSeparator' => '_',
                             ];
 

@@ -11,13 +11,13 @@
     ],
     "require": {
         "ext-phalcon": ">=1.2.4,<2",
-        "getsky/phalcon-bootstrap": "1.1.x",
-        "getsky/phalcon-skeleton-provider": "1.0.x@dev",
+        "getsky/phalcon-bootstrap": "1.2.x",
+        "getsky/phalcon-skeleton-provider": "1.0.x",
         "phalcon/devtools": "dev-master"
     },
     "extra": {
         "branch-alias": {
-            "dev-develop": "1.1.x-dev"
+            "dev-develop": "1.2.x-dev"
         }
     },
     "minimum-stability": "dev",

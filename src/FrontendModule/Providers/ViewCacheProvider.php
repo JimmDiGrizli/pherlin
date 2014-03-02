@@ -1,6 +1,7 @@
 <?php
 namespace GetSky\FrontendModule\Providers;
 
+use GetSky\FrontendModule\Module;
 use GetSky\Phalcon\AutoloadServices\Provider;
 use Phalcon\Cache\Backend\Apc;
 use Phalcon\Cache\Backend\File;
@@ -29,20 +30,16 @@ class ViewCacheProvider implements Provider
         /**
          * @var Config $config
          */
-        $config = $this->options->get('module-options')->get('volt');
-        $environment = $this->options->get('app-status')->get('environment');
+        $config = $this->options
+            ->get('module-options')
+            ->get(Module::NAME)
+            ->get('cache');
 
-        return function () use ($config, $environment) {
+        return function () use ($config) {
 
             $ultraFastFrontend = new Data(['lifetime' => 3600]);
             $fastFrontend = new Data(['lifetime' => 86400]);
             $slowFrontend = new Data(['lifetime' => 604800]);
-
-            $path = str_replace(
-                '{environment}',
-                $environment,
-                $config->get('path')
-            );
 
             $cache = new Multiple(
                 [
@@ -62,7 +59,7 @@ class ViewCacheProvider implements Provider
                         $slowFrontend,
                         [
                             'prefix' => 'cache',
-                            'cacheDir' => $path
+                            'cacheDir' => $config->get('path')
                         ]
                     )
                 ]
