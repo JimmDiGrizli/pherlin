@@ -1,7 +1,7 @@
 {
     "name": "getsky/pherlin",
     "description": "Skeleton for develop Phalcon applications",
-    "keywords": [ "framework", "phalcon", "skeleton" ],
+    "keywords": [ "framework", "phalcon", "pherlin", "skeleton" ],
     "license": "MIT",
     "authors": [
         {
