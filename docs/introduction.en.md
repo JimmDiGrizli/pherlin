@@ -2,29 +2,29 @@
 ===========
 
 What is Pherlin?
-------------------
+----------------
 
 Pherlin is an open source, which is a wrapper for a quick start developing applications on proper framework Phalcon. 
 Pherlin is loosely coupled, allowing you to use its objects in your application based on Phalcon.
 
 What gives Pherlin?
------------------
+-------------------
 
 Pherlin enables flexibly manage your application by means of configuration files: 
 - possibility to organize different behavior of the program depending on the environment;
 - organize initialization of Dependency Injection through configuration files with support for all native capabilities;
 - organize uniform storage and connecting modules, including with their installation through the composer.
 
-Установка
----------
-Для того, чтобы использовать Pherlin, у вас должен быть установлен php версии не ниже 5.4, расширение Phalcon версии не ниже 1.2.4, а также должен быть установлен composer, для установки зависимостей.
+Installation
+------------
+To use Pherlin, you must have installed php 5.4 or later version, Phalcon 1.2.4 or later version, and must be installed composer to install dependencies.
 
-Сам Pherlin можно скачать двумя способами:
-- используя composer, выполнив команду ```composer create-project getsky/pherlin -s dev```;
+Pherlin can be downloaded in two ways:
+- use composer by running the command ```composer create-project getsky/pherlin -s dev```;
 
-- либо скачав архив проекта с сайта github.
+- or by downloading the archive project from github.
 
-После установки проекта в папку назначения, необходимо установить пакеты зависимостей, выполнив команду ```composer update ```.
+After installation, you must install the dependency packages by runniing the command ```composer update ```.
 
 Ознакомление с содержимым
 -------------------------
