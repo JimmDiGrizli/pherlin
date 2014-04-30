@@ -1,5 +1,5 @@
-Skeleton for Phalcon
-====================
+Pherlin [![Stories in Ready](https://badge.waffle.io/jimmdigrizli/pherlin.png?label=ready&title=Ready)](http://waffle.io/jimmdigrizli/pherlin)
+=======
 
 This skeleton allows you to quickly begin developing applications on multi-module Phalcon.
 
