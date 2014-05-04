@@ -11,6 +11,9 @@
     ],
     "require": {
         "ext-phalcon": ">=1.2.4,<2",
+        "phalcon/incubator": "dev-master",
+        "phpunit/phpunit": "3.7.*",
+
         "getsky/phalcon-bootstrap": "1.2.x",
         "getsky/phalcon-skeleton-provider": "1.0.x"
     },
