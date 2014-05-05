@@ -15,3 +15,15 @@ Pherlin enables flexibly manage your application by means of configuration files
 - possibility to organize different behavior of the program depending on the environment;
 - organize initialization of Dependency Injection through configuration files with support for all native capabilities;
 - organize uniform storage and connecting modules, including with their installation through the composer.
+
+
+Installation
+------------
+
+To use Pherlin, you must have installed php 5.4 or later version, Phalcon 1.2.4 or later version, and must be installed composer to install dependencies.
+
+Pherlin can be downloaded in two ways:
+- use composer by running the command ```composer create-project getsky/pherlin myproject -s dev```;
+
+- or by downloading the archive project from github and install the dependency packages by runniing the command ```composer update ```.
+
