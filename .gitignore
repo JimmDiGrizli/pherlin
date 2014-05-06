@@ -3,3 +3,4 @@
 /app/var/*
 /vendor/
 /composer.lock
+/tests/codeception/_log/*

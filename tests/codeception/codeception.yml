@@ -1,0 +1,18 @@
+actor: Dev
+paths:
+    tests: \
+    log: \_log
+    data: \_data
+    helpers: \_helpers
+settings:
+    bootstrap: _bootstrap.php
+    colors: true
+    memory_limit: 1024M
+    log: true
+modules:
+    config:
+        Db:
+            dsn: ''
+            user: ''
+            password: ''
+            dump: /_data/dump.sql
