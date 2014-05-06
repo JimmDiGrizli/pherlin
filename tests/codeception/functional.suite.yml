@@ -8,4 +8,9 @@
 
 class_name: TestDev
 modules:
-    enabled: [Filesystem, TestHelper]
+    enabled: [Phalcon1, Filesystem, TestHelper]
+    config:
+            Phalcon1:
+                bootstrap: ../../public/codeception.php
+                cleanup: true
+                savepoints: true

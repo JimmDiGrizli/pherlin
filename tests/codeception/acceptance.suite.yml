@@ -12,4 +12,4 @@ modules:
         - WebHelper
     config:
         PhpBrowser:
-            url: 'http://phalcon-skeleton'
+            url: 'http://becoach3.ru'
