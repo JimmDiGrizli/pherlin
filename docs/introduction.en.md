@@ -85,7 +85,7 @@ Catalog ```app/``` serves us to store all configuration files (directory ```app/
 
 Catalog ```public/``` contains all application resources (images, css-styles, js-scripts, etc.), as well as php file that will redirect all requests - ```public/index.php```. Also present in the catalog file ```public/codeception.php``` required to run BDD-tests.
 
-Каталог ```src/``` содержит файлы с логикой вашего приложения, а именно модули. Из коробки уже есть один предустановленный модуль - ```FrondendModule```. Вы можете использовать его, либо удалть и создать свой модуль. Как создавать новые модули и удалить предустановленный будет написано позже. Сам каталог модуля содержит папку ```Controllers``` с контроллерами модуля, ```Providers``` с провайдерами сервисов модуля, ```Resources``` с ресурсами приложения - конфигурационные файлы и шаблонами.
+Directory ```src/``` contains files with the logic of your application, namely modules. Out of the box already has a preset module - ```FrondendModule```. You can use it or delete and create new module. How to create new modules and delete preset will be written later. Module directory contains a folder ```Controllers``` with controllers of module, ```Providers``` with providers of services module, ```Resources``` with application resources - configuration files and templates.
 
 Смена окружения
 ---------------
