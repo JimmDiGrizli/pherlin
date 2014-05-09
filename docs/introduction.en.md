@@ -24,9 +24,9 @@ Pherlin can be downloaded in two ways:
 
 - or by downloading the archive project from github and install the dependency packages by runniing the command ```composer update ```.
 
-Ознакомление с содержимым
--------------------------
-Так же как и Phalcon, Pherlin не требует использовать определенную структуру каталогов, вы можете использовать любую удобную для вас структуру. Но для быстрого начала работы, вполне может сгодиться структура по умолчанию:
+Acquaintance with the content
+-----------------------------
+As well as Phalcon, Pherlin does not require a certain directory structure, you can use any convenient structure for you. But for a quick start, you can use default structure:
 ```
 app/
 .   config/
@@ -68,6 +68,12 @@ src/
 .   .   .   .   .   error404.volt
 .   .   .   .   .   index.volt
 .   .   Module.php 
+tests/
+.   codecepton/
+.   ...
+.   phpunit/
+.   ...
+.   install-php-extension.sh
 .gitignore
 .htaccess
 LICENSE
@@ -75,7 +81,7 @@ README.md
 composer.json
 ```
 
-Давайте разберем подробнее всю структуру каталогов. 
+Catalog ```app/``` serves us to store all configuration files (directory ```app/config/```), which relate to the entire application (all modules). Catalog ```app/environment ``` is used for various services cache our application. Also, by default, are already reserved two directories for user services and providers: ```app/Providers/``` and ```app/Services /``` respectively.
 
 Каталог ```app/``` служит нам для хранения всех конфигурационных файлов (каталог ```app/config/```), которые касаются всего приложения (всех модулей). Каталог ```app/environment ``` используется для хранения кэша различными сервисами нашего приложения. Также, по умолчанию, в системе зарезервированы два каталога для пользовательских сервисов и провайдеров, - ```app/Providers/``` и ```app/Services/``` соответственно. 
 
