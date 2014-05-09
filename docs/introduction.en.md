@@ -87,9 +87,12 @@ Catalog ```public/``` contains all application resources (images, css-styles, js
 
 Directory ```src/``` contains files with the logic of your application, namely modules. Out of the box already has a preset module - ```FrondendModule```. You can use it or delete and create new module. How to create new modules and delete preset will be written later. Module directory contains a folder ```Controllers``` with controllers of module, ```Providers``` with providers of services module, ```Resources``` with application resources - configuration files and templates.
 
-Смена окружения
----------------
-Окружением по умолчанию является ```dev```. Для смены окружения необходимо при создании объекта класса ```Bootstap``` вторым аргументом передавать название необходимого окружения:
+Directory ```tests/``` contains catalogs for testing using Codeception and phpUnit and file with the commands to install the extension Phalcon, which may be necessary when using the CI.
+
+Changing the environment
+------------------------
+
+Environment default is ```dev ```. To change the environment must be passed as the second argument the name of the desired environment:
 
 ```php
 #/public/index.php
