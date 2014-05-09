@@ -83,9 +83,7 @@ composer.json
 
 Catalog ```app/``` serves us to store all configuration files (directory ```app/config/```), which relate to the entire application (all modules). Catalog ```app/environment ``` is used for various services cache our application. Also, by default, are already reserved two directories for user services and providers: ```app/Providers/``` and ```app/Services /``` respectively.
 
-Каталог ```app/``` служит нам для хранения всех конфигурационных файлов (каталог ```app/config/```), которые касаются всего приложения (всех модулей). Каталог ```app/environment ``` используется для хранения кэша различными сервисами нашего приложения. Также, по умолчанию, в системе зарезервированы два каталога для пользовательских сервисов и провайдеров, - ```app/Providers/``` и ```app/Services/``` соответственно. 
-
-Каталог ```public/``` содержит все ресурсы приложения (картинки, css-стили, js-скрипты и др.), а также php файл, на который будут перенаправляться все запросы - ```public/index.php```.
+Catalog ```public/``` contains all application resources (images, css-styles, js-scripts, etc.), as well as php file that will redirect all requests - ```public/index.php```. Also present in the catalog file ```public/codeception.php``` required to run BDD-tests.
 
 Каталог ```src/``` содержит файлы с логикой вашего приложения, а именно модули. Из коробки уже есть один предустановленный модуль - ```FrondendModule```. Вы можете использовать его, либо удалть и создать свой модуль. Как создавать новые модули и удалить предустановленный будет написано позже. Сам каталог модуля содержит папку ```Controllers``` с контроллерами модуля, ```Providers``` с провайдерами сервисов модуля, ```Resources``` с ресурсами приложения - конфигурационные файлы и шаблонами.
 
