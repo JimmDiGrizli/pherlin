@@ -107,10 +107,9 @@ To create a module, you can use two different approaches: a module inside Pherli
 
 **Module inside Pherlin**
 
+1. Create a directory with the name of the module ```ModuleNameModule``` listing ```src/```. And also create a directory for controllers, providers and resources module. As a result, should get such a structure:
 
-1. Создаём каталог с названием модуля ```ModuleNameModule``` в каталоге ```src/```. А также создаем каталог для контроллеров, провайдеров и ресурсов модуля. В итоге должна получиться такая структура: 
-
-    ```
+```
 src/
 .   ModuleNameModule/
 .   .   Controllers/
@@ -118,21 +117,23 @@ src/
 .   .   Resources/
 ```
 
-2. Теперь необходимо создать главный класс модуля (```MOdule.php```) в корне каталога ```ModuleNameModule``` со следующим содержанием:
-    ```php
-    <?php
-    namespace GetSky\ModuleNameModule;
+2. Now you need to create a master class of module (```Module.php ```) in the root directory ```ModuleNameModule``` with the following contents:
+
+```php
+<?php
+namespace GetSky\ModuleNameModule;
     
-    use GetSky\Phalcon\Bootstrap\Module as ModuleBootstrap;
+use GetSky\Phalcon\Bootstrap\Module as ModuleBootstrap;
     
-    class Module extends ModuleBootstrap
-    {   
-        const DIR = __DIR__;
-        //const CONFIG = '/Resources/options.ini';
-        //const SERVICES = '/Resources/services.ini';
-    }
-    ```
-Сам класс очень прост: в нем необходимо переопределить всего одну константу - ```DIR```, которая указывает на путь к каталогу модуля. Также вы можете задать свои пути для хранения конфигурации модуля (константа ```CONFIG```) и списка подключаемых сервисов (константа ```SERVICES```).
+class Module extends ModuleBootstrap
+{   
+    const DIR = __DIR__;
+    //const CONFIG = '/Resources/options.ini';
+    //const SERVICES = '/Resources/services.ini';
+}
+```
+
+The class itself is very simple: it is necessary to override only one constant - ```DIR ```, which indicates the path to the directory module. Also you can set your path for storing module configuration (constant ```CONFIG ```) and the list of connected services (constant ```SERVICES ```).
 
 3. Теперь в папке ```Resources``` создадим каталог ```config``` и разместим в ней конфигурационный файл модуля ```config.ini``` следующего содержания:
     ```ini
