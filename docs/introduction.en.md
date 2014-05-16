@@ -99,6 +99,8 @@ To create a module, you can use two different approaches: a module inside Pherli
     .   .   Providers/
     .   .   Resources/
     ```
+    Directory ```src/``` contains files with the logic of your application, namely modules. Out of the box already has a     preset module - ```FrondendModule```. You can use it or delete and create new module. How to create new modules and     delete preset will be written later. Module directory contains a folder ```Controllers``` with controllers of module,     ```Providers``` with providers of services module, ```Resources``` with application resources - configuration files     and templates.
+
 
 2. Now you need to create a master class of module (```Module.php ```) in the root directory ```ModuleNameModule``` with the following contents:
     ```php
