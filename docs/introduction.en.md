@@ -24,9 +24,9 @@ Pherlin can be downloaded in two ways:
 
 - or by downloading the archive project from github and install the dependency packages by runniing the command ```composer update ```.
 
-Ознакомление с содержимым
--------------------------
-Так же как и Phalcon, Pherlin не требует использовать определенную структуру каталогов, вы можете использовать любую удобную для вас структуру. Но для быстрого начала работы, вполне может сгодиться структура по умолчанию:
+Acquaintance with the content
+-----------------------------
+As well as Phalcon, Pherlin does not require a certain directory structure, you can use any convenient structure for you. But for a quick start, you can use default structure:
 ```
 app/
 .   config/
@@ -68,6 +68,12 @@ src/
 .   .   .   .   .   error404.volt
 .   .   .   .   .   index.volt
 .   .   Module.php 
+tests/
+.   codecepton/
+.   ...
+.   phpunit/
+.   ...
+.   install-php-extension.sh
 .gitignore
 .htaccess
 LICENSE
@@ -75,17 +81,18 @@ README.md
 composer.json
 ```
 
-Давайте разберем подробнее всю структуру каталогов. 
+Catalog ```app/``` serves us to store all configuration files (directory ```app/config/```), which relate to the entire application (all modules). Catalog ```app/environment ``` is used for various services cache our application. Also, by default, are already reserved two directories for user services and providers: ```app/Providers/``` and ```app/Services /``` respectively.
 
-Каталог ```app/``` служит нам для хранения всех конфигурационных файлов (каталог ```app/config/```), которые касаются всего приложения (всех модулей). Каталог ```app/environment ``` используется для хранения кэша различными сервисами нашего приложения. Также, по умолчанию, в системе зарезервированы два каталога для пользовательских сервисов и провайдеров, - ```app/Providers/``` и ```app/Services/``` соответственно. 
+Catalog ```public/``` contains all application resources (images, css-styles, js-scripts, etc.), as well as php file that will redirect all requests - ```public/index.php```. Also present in the catalog file ```public/codeception.php``` required to run BDD-tests.
 
-Каталог ```public/``` содержит все ресурсы приложения (картинки, css-стили, js-скрипты и др.), а также php файл, на который будут перенаправляться все запросы - ```public/index.php```.
+Directory ```src/``` contains files with the logic of your application, namely modules. Out of the box already has a preset module - ```FrondendModule```. You can use it or delete and create new module. How to create new modules and delete preset will be written later. Module directory contains a folder ```Controllers``` with controllers of module, ```Providers``` with providers of services module, ```Resources``` with application resources - configuration files and templates.
 
-Каталог ```src/``` содержит файлы с логикой вашего приложения, а именно модули. Из коробки уже есть один предустановленный модуль - ```FrondendModule```. Вы можете использовать его, либо удалть и создать свой модуль. Как создавать новые модули и удалить предустановленный будет написано позже. Сам каталог модуля содержит папку ```Controllers``` с контроллерами модуля, ```Providers``` с провайдерами сервисов модуля, ```Resources``` с ресурсами приложения - конфигурационные файлы и шаблонами.
+Directory ```tests/``` contains catalogs for testing using Codeception and phpUnit and file with the commands to install the extension Phalcon, which may be necessary when using the CI.
 
-Смена окружения
----------------
-Окружением по умолчанию является ```dev```. Для смены окружения необходимо при создании объекта класса ```Bootstap``` вторым аргументом передавать название необходимого окружения:
+Changing the environment
+------------------------
+
+Environment default is ```dev ```. To change the environment must be passed as the second argument the name of the desired environment:
 
 ```php
 #/public/index.php
@@ -93,28 +100,29 @@ $app = new Bootstrap(new FactoryDefault(),'prod');
 
 ```
 
-Создание и управление модулями
-------------------------------
+Creating the Module
+-------------------
 
-Для создания модуля можно использовать два разных подхода: создание модуля внутри Pherlin (для этого необходимо создать каталог с названием модуля ```ModuleNameModule``` в каталоге ```src/```), либо создать отдельный проект с модулем в своей IDE, и подключать этот модуль уже через composer. Второй метод более сложен, но при этом дает больше гибкости в дальнейшем использовании этого модуля, а также обновлении Pherlin. Ниже приведена пошаговая инструкция для создания своего модуля:
+To create a module, you can use two different approaches: a module inside Pherlin (for this you need to create a directory with the name of the module ```ModuleNameModule``` in the directory ```src/```), or to create a separate project with the module in its IDE and connect the module after composer. The second method is more complicated, but it gives more flexibility to continue using this module. Below is a step by step guide to create your own module:
 
-1. Создаём каталог с названием модуля ```ModuleNameModule``` в каталоге ```src/```. А также создаем каталог для контроллеров, провайдеров и ресурсов модуля. В итоге должна получиться такая структура: 
+**Module inside Pherlin**
 
+1. Create a directory with the name of the module ```ModuleNameModule``` listing ```src/```. And also create a directory for controllers, providers and resources module. As a result, should get such a structure:
     ```
-src/
-.   ModuleNameModule/
-.   .   Controllers/
-.   .   Providers/
-.   .   Resources/
-```
+    src/
+    .   ModuleNameModule/
+    .   .   Controllers/
+    .   .   Providers/
+    .   .   Resources/
+    ```
 
-2. Теперь необходимо создать главный класс модуля (```MOdule.php```) в корне каталога ```ModuleNameModule``` со следующим содержанием:
+2. Now you need to create a master class of module (```Module.php ```) in the root directory ```ModuleNameModule``` with the following contents:
     ```php
     <?php
     namespace GetSky\ModuleNameModule;
     
     use GetSky\Phalcon\Bootstrap\Module as ModuleBootstrap;
-    
+        
     class Module extends ModuleBootstrap
     {   
         const DIR = __DIR__;
@@ -122,7 +130,7 @@ src/
         //const SERVICES = '/Resources/services.ini';
     }
     ```
-Сам класс очень прост: в нем необходимо переопределить всего одну константу - ```DIR```, которая указывает на путь к каталогу модуля. Также вы можете задать свои пути для хранения конфигурации модуля (константа ```CONFIG```) и списка подключаемых сервисов (константа ```SERVICES```).
+    The class itself is very simple: it is necessary to override only one constant - ```DIR ```, which indicates the path     to the directory module. Also you can set your path for storing module configuration (constant ```CONFIG ```) and the     list of connected services (constant ```SERVICES ```).
 
 3. Теперь в папке ```Resources``` создадим каталог ```config``` и разместим в ней конфигурационный файл модуля ```config.ini``` следующего содержания:
     ```ini
