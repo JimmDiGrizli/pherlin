@@ -52,22 +52,6 @@ public/
 .   .htaccess
 .   index.php  
 src/
-.   FrontendModule/
-.   .   Controllers/
-.   .   .   indexController.php
-.   .   Providers/
-.   .   .   DispatcherProvider.php
-.   .   .   MySqlProvider.php
-.   .   .   ViewCacheProvider.php
-.   .   .   ViewProvider.php
-.   .   Resources/
-.   .   .   config/
-.   .   .   views/
-.   .   .       index/
-.   .   .   .   .   about.volt
-.   .   .   .   .   error404.volt
-.   .   .   .   .   index.volt
-.   .   Module.php 
 tests/
 .   codecepton/
 .   ...
@@ -85,7 +69,7 @@ Catalog ```app/``` serves us to store all configuration files (directory ```app/
 
 Catalog ```public/``` contains all application resources (images, css-styles, js-scripts, etc.), as well as php file that will redirect all requests - ```public/index.php```. Also present in the catalog file ```public/codeception.php``` required to run BDD-tests.
 
-Directory ```src/``` contains files with the logic of your application, namely modules. Out of the box already has a preset module - ```FrondendModule```. You can use it or delete and create new module. How to create new modules and delete preset will be written later. Module directory contains a folder ```Controllers``` with controllers of module, ```Providers``` with providers of services module, ```Resources``` with application resources - configuration files and templates.
+Directory `` `src ``` is used to store the modules that you create in your application.
 
 Directory ```tests/``` contains catalogs for testing using Codeception and phpUnit and file with the commands to install the extension Phalcon, which may be necessary when using the CI.
 
