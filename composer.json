@@ -15,12 +15,13 @@
         "phpunit/phpunit": "3.7.*",
         "codeception/codeception": "*",
 
-        "getsky/phalcon-bootstrap": "1.2.x",
-        "getsky/phalcon-skeleton-provider": "1.0.x"
+        "getsky/phalcon-bootstrap": "1.3.x",
+        "getsky/phalcon-skeleton-provider": ">=1.0.1",
+        "getsky/pherlin-demo-module": "1.0.x"
     },
     "extra": {
         "branch-alias": {
-            "dev-develop": "1.2.x-dev"
+            "dev-develop": "1.3.x-dev"
         }
     },
     "minimum-stability": "dev",
