@@ -3,13 +3,11 @@
 
 What is Pherlin?
 ----------------
-
 Pherlin is an open source, which is a wrapper for a quick start developing applications on proper framework Phalcon. 
 Pherlin is loosely coupled, allowing you to use its objects in your application based on Phalcon.
 
 What gives Pherlin?
 -------------------
-
 Pherlin enables flexibly manage your application by means of configuration files: 
 - possibility to organize different behavior of the program depending on the environment;
 - organize initialization of Dependency Injection through configuration files with support for all native capabilities;
@@ -75,7 +73,6 @@ Directory ```tests/``` contains catalogs for testing using Codeception and phpUn
 
 Changing the environment
 ------------------------
-
 Environment default is ```dev ```. To change the environment must be passed as the second argument the name of the desired environment:
 
 ```php
@@ -86,7 +83,6 @@ $app = new Bootstrap(new FactoryDefault(),'prod');
 
 Creating the Module
 -------------------
-
 To create a module, you can use two different approaches: a module inside Pherlin (for this you need to create a directory with the name of the module ```ModuleNameModule``` in the directory ```src/```), or to create a separate project with the module in its IDE and connect the module after composer. The second method is more complicated, but it gives more flexibility to continue using this module. Below is a step by step guide to create your own module:
 
 **Module inside Pherlin**
@@ -112,118 +108,43 @@ To create a module, you can use two different approaches: a module inside Pherli
     class Module extends ModuleBootstrap
     {   
         const DIR = __DIR__;
+	const NAME = "ModuleName"
         //const CONFIG = '/Resources/options.ini';
         //const SERVICES = '/Resources/services.ini';
     }
     ```
-    The class itself is very simple: it is necessary to override only one constant - ```DIR ```, which indicates the path     to the directory module. Also you can set your path for storing module configuration (constant ```CONFIG ```) and the     list of connected services (constant ```SERVICES ```).
+    The class itself is very simple: it is necessary to override only two constants - ```DIR ``` and ```NAME``` (Name of you module), which indicates the path     to the directory module. Also you can set your path for storing module configuration (constant ```CONFIG ```) and the     list of connected services (constant ```SERVICES ```).
 
-3. Теперь в папке ```Resources``` создадим каталог ```config``` и разместим в ней конфигурационный файл модуля ```config.ini``` следующего содержания:
+3. Now create a module configuration file config.ini in the folder ```Resources/config/```:
     ```ini
-    [volt]
+    [view]
     path = "../app/environment/%environment%/cache/volt/"
     extension = ".volt"
-    stat = 1
-    debug = 1
-    
-    [cache]
-    path = "../app/environment/%environment%/cache/ModuleName/"
-    host = "localhost"
-    port = "11211"
-    
-    [mysql]
-    host = "localhost"
-    username = "root"
-    password = ""
-    name = "mydb"
-    persistent = "true"   
+    [viewCache]
+    path = "../app/environment/%environment%/cache/frontend/" 
     ```
-    В этом файле мы прописали настройки для шаблонизатора, кэшера и данные для подключения к базе данных.
+    In this file we are prescribed settings for view and cache.
     
-4. В той же папке ```Resources/config/``` создаем файл ```services.ini```, который будет содержать информацию о том, какие сервисы требуются для данного модуля:
+4. In the same folder ```Resources/config/``` we create file ```services.ini```, which will contain information about which services are required for this module:
     ```ini
     [dispatcher]
     provider = "GetSky\Phalcon\Provider\DispatcherProvider"
     arg.0.service = "config"
-    arg.1.var = "GetSky\FrontendModule\Controllers"
-    
+    arg.1.var = "GetSky\ModuleName\Controllers"
     [view]
-    provider = "GetSky\FrontendModule\Providers\ViewProvider"
+    provider = "GetSky\Phalcon\Provider\ViewProvider"
     arg.0.service = "config"
-
+    arg.1.var = "ModuleName"
+    [viewCache]
+    provider = "GetSky\Phalcon\Provider\ViewCacheProvider"
+    arg.0.service = "config"
+    arg.1.var = "ModuleName"
     ```
-    Более подробно о том, как создавать сервисы вы сможете прочитать в главе посвящённой phalcon-autoload-services.
+    For more information about how to create services you can read in the chapter devoted to this issue. In this example,     we use the standard Pherlin providers are located in the repository phalcon-skeleton-provider.
 
-5. Теперь нам нужно создать один провайдер для сервиса ```view```. который позволяет нам в модуле использовать шаблонизатор volt или php для формирования страниц. Для этого в папке ```Providers``` создаем файл ```ViewProvider.php```:
-    ```php
-    <?php
-    namespace GetSky\ModuleNameModule\Providers;
-    
-    use GetSky\FrontendModule\Module;
-    use GetSky\Phalcon\AutoloadServices\Provider;
-    use Phalcon\Config;
-    use Phalcon\Mvc\View;
-    use Phalcon\Mvc\View\Engine\Volt;
-    
-    class ViewProvider implements Provider
-    {
-        /**
-         * @var Config
-         */
-        private $options;
+5. Now we create directory ```Resources/views/``` for storing templates used by the service ```view ```.
 
-        public function __construct(Config $options)
-        {
-            $this->options = $options;
-        }
-    
-        /**
-         * @return callable
-         */
-        public function getServices()
-        {
-            /**
-             * @var Config $config
-             */
-            $config = $this->options
-                ->get('module-options')
-                ->get(Module::NAME)
-                ->get('volt');
-    
-            return function () use ($config) {
-                $view = new View();
-                $view->setViewsDir(Module::DIR . '/Resources/views/');
-    
-                $view->registerEngines(
-                    [
-                        '.volt' => function ($view) use ($config) {
-                                $volt = new Volt($view);
-    
-                                $options = [
-                                    'compiledPath' => $config->get('path'),
-                                    'compiledSeparator' => '_',
-                                ];
-    
-                                if ($config->debug != 1) {
-                                    $options['compileAlways'] = true;
-                                }
-    
-                                $volt->setOptions($options);
-    
-                                return $volt;
-                            },
-                        '.phtml' => 'Phalcon\Mvc\View\Engine\Php'
-                    ]
-                );
-    
-                return $view;
-            };
-        }
-    } 
-    ```
-6. Теперь создаем каталог ```Resources/views/``` для хранения шаблонов используемых сервисом ```view```.
-
-7. Создаем первый контроллер, к примеру ```IndexController.php``` в каталоге ```Controllers```:
+6. Create the first controller ```IndexController.php``` in directory ```Controllers ```:
     ```php
     <?php
     namespace GetSky\FrontendModule\Controllers;
@@ -245,43 +166,37 @@ To create a module, you can use two different approaches: a module inside Pherli
         }
     }
     ```
-    И создадим, для примера, один шаблон ```Resources/views/index/index.volt```:
+    And create one template ```Resources/views/index/index.volt ```:
     ```html
     <h1>Hi Phalcon!</h1>
     ```
 
-8. После всех этих действий мы должны получить такую структуру файлов в нашем модуле:
+8. After all these steps, we need to get a file structure for our module:
     ```
-src/
-.   ModuleNameModule/
-.   .   Controllers/
-.   .   .   IndexController.php
-.   .   Providers/
-.   .   .   ViewProvider.php
-.   .   Resources/
-.   .   .   config/
-.   .   .   .   config.ini
-.   .   .   .   services.ini
-.   .   .   views/
-.   .   .   .    index/
-.   .   .   .    .    index.volt
-Module.php
-```
+    src/
+    .   ModuleNameModule/
+    .   .   Controllers/
+    .   .   .   IndexController.php
+    .   .   Resources/
+    .   .   .   config/
+    .   .   .   .   config.ini
+    .   .   .   .   services.ini
+    .   .   .   views/
+    .   .   .   .    index/
+    .   .   .   .    .    index.volt
+    Module.php
+    ```
 
-9. Последний шаг заключается в том, что мы свяжем модуль с приложением. Для этого нам необходимо внести одну запись в файл конфигурации приложения. По умолчанию это файл ```app/config/config.ini```:
+9. The final step is that we associate module with the application. To do this, we need to enter one entry in the application configuration file. By default, this file is ```app/config/config.ini```:
     ```ini
     [modules]
-    frontend = "GetSky\FrontendModule"
-    modulename = "GetSky\ModuleNameModule"
+    ModuleName.namespace = "GetSky\ModuleNameModule"
     ```
-    И чтобы сделать наш модуль для роутинга модулем по умочанию:
+    And to make our module for routing module by default:
     ```ini
     [app]
-    #def_module = "frontend"
-    def_module = "modulename"
+    def_module = "ModuleName"
     ```
-    Без этой правки наш модуль доступен будет только по ссылке ```module/index/action```, если же мы сделаем его по умолчанию то по "index/action".
-    
 
 Загрузчик конфигурационных файлов
 ---------------------------------
