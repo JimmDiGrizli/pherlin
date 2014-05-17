@@ -147,7 +147,7 @@ To create a module, you can use two different approaches: a module inside Pherli
 6. Create the first controller ```IndexController.php``` in directory ```Controllers ```:
     ```php
     <?php
-    namespace GetSky\FrontendModule\Controllers;
+    namespace GetSky\ModuleNameModule\Controllers;
     
     use Phalcon\Mvc\Controller;
     
