@@ -198,107 +198,26 @@ To create a module, you can use two different approaches: a module inside Pherli
     def_module = "ModuleName"
     ```
 
-Загрузчик конфигурационных файлов
----------------------------------
-В Pherlin используется универсальный загрузчик конфигурационных файлов, который позволяет:
-- загружать конфигурации в ini, json и yaml форматах;
-- склеивать их между собой и подгружать их друг в друга;
-- подменять переменную ```{environment}``` на текущее окружение приложения.
+Config Loader
+-------------
+Pherlin use universal loader for configuration files, which allows:
+- create a configuration of various formats (ini, yaml, JSON, or any other, for which you will add adapter) via a single method;
+- merge configuration files;
+- replace variable ```{environment}``` on application environment.
 
-Стоит заметить, что использование yaml без установленного расширения PECL - yaml (http://pecl.php.net/package/yaml) может заметно замедлить приложение из-за того, что в случаи отсутствия расширения используется пакет ```symfony/yaml```.
+It should be noted that the use of yaml without installed extension PECL - [yaml](http://pecl.php.net/package/yaml), may significantly slow down the application due to the fact that in the absence of expansion package is used ```symfony/yaml` ``.
 
-Загрузчик представляет собой отдельный сервис (```getsky/phalcon-config-loader```), который подгружается с помощью composer. Для того, чтобы начать им пользоваться необходимо создать экземпляр класса ```ConfigLoader``` с передачей в его конструктор переменной с текущим окружением.
+The loader is a individual package [ConfigLoader]((https://github.com/JimmDigrizli/phalcon-config-loader) (```getsky/phalcon-config-loader```), which is loaded with the help of composer. In order to start using it, you must create instance of the class ```ConfigLoader``` with transfer of current environment, or get it from the DI (service `` `config-loader ```).
 
 ```php
 $configLoader = new ConfigLoader($this->environment);
+// or
+$configLoader = $di->get('config-loader');
 $config = $configLoader->create('config.ini');
 ```
 
-Если вы не хотите, чтобы происходил импорт ресурсов (подгрузка других конфигурационных файлов в эту конфигурацию), то вторым параметром необходимо передать булево значение ```false```:
+For more information, see the [README](https://github.com/JimmDiGrizli/phalcon-config-loader/blob/develop/README.md).
 
-```php
-$config = $configLoader->create('config.ini', false);
-```
-
-В Pherlin загрузчик конфигурационных файлов помещается в DI под названием ```config-loader``` после выполнения метода ```run()``` класса ```Bootstrap``` в файле ```/public/index.php```, что позволяет с лёгкостью воспользоваться им в любой части вашего приложения где есть доступ к DI.
-
-**Склейка конфигурационных файлов выглядит следующим образом:**
-
-```ini
-#config.ini
-[test]
-test = true
-%res% = import.ini
-
-```
-```ini
-#import.ini
-import = "test"
-```
-
-
-При загрузке конфигурационного файла ```config.ini```:
-```php
-[                               
-    'test' => [                 
-        'test' => true,                             
-        'import' => true,       
-        'env' => 'dev'          
-    ]                           
-]                               
-```
-
-**Подгрузка конфигурационных файлов выглядит следующим образом:**
-
-```ini
-#config.ini
-[test]
-test = true
-exp = %res:import.ini
-
-```
-```ini
-#import.ini
-import = "test"
-```
-
-При загрузке конфигурационного файла ```config.ini```:
-```php
-[
-    'test' => [
-        'test' => true,
-        'exp' => [
-            'import' => true,
-            'env' => 'dev'
-        ]
-    ]
-]                                                        
-```
-
-**Подменять переменную {environment} на текущее окружение приложения:**
-
-```ini
-#config.ini
-[test]
-test = true
-exp = "app/config/%environment%/cache/"
-```
-
-При загрузке конфигурационного файла ```config.ini```, если активно окружение dev:
-```php
-[                               
-    'test' => [                 
-        'test' => true,     
-        'exp' = "app/config/dev/cache/"                                 
-    ]                           
-]
-```
-
-Вы также можете добавлять свои адаптеры конфигурационных файлов. Для этого необходимо вызвать метод ```add()``` с передачей расширения, которое будет обрабатывать данный адаптер и класс адаптера, который должен наследовать класс ```Phalcon\Config```.
-
-```php
-$config = $configLoader->add('xml', 'MyNamespace/XmlConfig');
-```
 
 Автозагрузчик сервисов
 ----------------------
