@@ -289,3 +289,11 @@ arg.4.object.call.0.method = "run"
 ```
 
 In the above example, we register the service ```SomeNamespace\FerstClass``` under the name ```fest-service ``` and pass 5 arguments: the service ```config```, variable ```24```, DI (object implements ```DiInterface```, which was passed to the constructor ```Botstrap ``` in file ```/public/index.php```), service ```shared-services``` caused by the method ``` getShared``` and an instance of ```SomeNamespace\SecondClass```, which was first created with transfer ```42``` and calling ```run```.
+
+Running Codeception
+-------------------
+To run the tests necessary to go to ```public``` folder and run:
+
+```bash
+bash ../vendor/bin/codecept run --config ../tests/codeception
+```
