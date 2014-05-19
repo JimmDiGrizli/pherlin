@@ -219,12 +219,18 @@ $config = $configLoader->create('config.ini');
 For more information, see the [README](https://github.com/JimmDiGrizli/phalcon-config-loader/blob/develop/README.md).
 
 
-Автозагрузчик сервисов
-----------------------
-
-Главной фишкой Pherlin является автозагрузка сервисов в DI. Для это используются конфигурационные файлы. Ниже приведен один из таких файлов в формате ini, но вы можете использовать также и yaml и json, либо любой другой, если для него вы задали адаптер в загрузчике конфигурационных файлов (сервис ```config-loader```):
+Configuring Services
+--------------------
+Pherlin uses a configuration file for registration services in the DI. Configuration services should be located in configuraion of application. That's how it is implemented by default:
 
 ```ini
+# /app/config/config.ini
+dependencies = %res:../app/config/services.ini
+```
+
+```ini
+# /app/config/services.ini
+
 [router]
 provider = "GetSky\Phalcon\Provider\RouterProvider"
 arg.0.service = "config"
@@ -238,11 +244,12 @@ call.0.arg.0.var = "24"
 string = "GetSky\Phalcon\Provider\SessionProvider"
 shared = true
 ```
-Возможность инициализации сервисов через конфигурационные файлы в Pherlin обеспечивается по средствам компонента ```phalcon-autoload-services```. 
 
-Зарегистрировать сервисы можно тремя способами:
+The ability to initialize services through configuration files in Pherlin provided by means of component [AutoloadServices](https://github.com/JimmDiGrizli/phalcon-autoload-services).
 
-1. По названию класса. Такой способ не позволяет передавать аргументы для конструктора класса или настраивать параметры.
+There are three ways to register services:
+
+1. By the class name. This method does not allow to pass arguments to a constructor or adjust parameters.
     
     ```ini
     ...
@@ -251,8 +258,7 @@ shared = true
     ...  
     ```
     
-2. Регистрация экземпляра напрямую. При использовании этого способа в контейнер зависимостей помещается уже готовый объект.
-
+2. Registering an instance directly. When using this method the container is placed dependency already finished object.
     ```php
     ...
     [request]
@@ -260,8 +266,7 @@ shared = true
     ...
     ```
 
-3. Через провайдера сервисов. Который должен реализовывать интерфейс ```GetSky\Phalcon\AutoloadServices```. По замыслу, провайдеры являются посредниками для регистрации анонимных функций в контейнере зависимостей, но при этом имеют возможность реализовать любой другой способ, который поддерживает Phalcon. 
-    
+3. Through the service provider. Which must implement the interface ```GetSky\Phalcon\AutoloadServices\Provider```. According to the plan, providers are intermediaries for registration of anonymous functions in the container dependency, but have the opportunity to realize any other way that supports Phalcon.
     ```ini
     ...
     [route]
@@ -269,7 +274,7 @@ shared = true
     ...    
     ```
     
-Для второго и третьего способа возможно указать какие аргументы будут переданы в конструктор и вызывать методы после его создания и до помещения в DI. Ниже приведен пример, как это можно реализовать на ini:
+For the second and third method possible to specify which arguments are passed to the constructor and invoke methods since its inception and prior to placement in the DI. Below is an example of how it can be implemented on the ini:
 
 ```ini
 [ferst-service]
@@ -283,4 +288,4 @@ arg.4.object.arg.0.var = "42"
 arg.4.object.call.0.method = "run"
 ```
 
-В приведенном выше примере, мы регистрируем сервис ```SomeNamespace\FerstClass``` под именем ```fest-service``` и передаем 5 аргументов: сервис ```config```, переменную ```24```, контейнер зависимостей (объект реализующий интерфейс ```DiInterface```, который был передан в конструктор ```Botstrap``` в файле ```/public/index.php```), сервис ```shared-services``` вызванный через метод ```getShared``` и экземпляр класса ```SomeNamespace\SecondClass```, который сначала создается с передачей в конструктор аргумента ```42```, и вызовом метода ```run```, а уже затем передается в конструктор нашего сервиса пятым параметром.
+In the above example, we register the service ```SomeNamespace\FerstClass``` under the name ```fest-service ``` and pass 5 arguments: the service ```config```, variable ```24```, DI (object implements ```DiInterface```, which was passed to the constructor ```Botstrap ``` in file ```/public/index.php```), service ```shared-services``` caused by the method ``` getShared``` and an instance of ```SomeNamespace\SecondClass```, which was first created with transfer ```42``` and calling ```run```.
