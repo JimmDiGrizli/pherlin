@@ -27,3 +27,9 @@ Pherlin can be downloaded in two ways:
 
 - or by downloading the archive project from github and install the dependency packages by runniing the command ```composer update ```.
 
+
+Documentation
+-------------
+Complete documentation: 
+* [Russian](https://github.com/JimmDiGrizli/pherlin/blob/develop/docs/introduction.ru.md)
+* [English](https://github.com/JimmDiGrizli/pherlin/blob/develop/docs/introduction.en.md)
