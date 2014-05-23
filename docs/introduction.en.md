@@ -198,6 +198,107 @@ To create a module, you can use two different approaches: a module inside Pherli
     def_module = "ModuleName"
     ```
 
+Application settings
+--------------------
+
+By default, application settings are located in the ```app/config``` and uses the format ```ini```, but you can use any other:
+
+```
+app/
+.   config/
+.   .   config.ini
+.   .   config_dev.ini
+.   .   config_prod.ini
+.   .   services.ini
+```
+
+Файлы шаблона ```config_%environment%.ini```, где ```%environment%``` - текщее окружение, являются основными файлами настройки приложения. Если вам потребуются, какие-либо, исключительные настройки для определенного окружения, то вы можете их задать именно в этих файлах.
+
+Файл ```config.ini``` это файл с общими настройками приложения. Его мы рассмотри более подробно, так как по-умолчанию именно он содержит все настройки, а файл ```config_%environment%.ini``` лишь импортируют этой файл:  
+
+```ini
+dependencies = %res:../app/config/services.ini
+
+[bootstrap]
+config-name = 'config'
+path = '../src/'
+module = 'Module.php'
+
+[namespaces]
+App\Providers = "../app/Providers/"
+App\Services = "../app/Services/"
+
+[modules]
+DemoModule.namespace = "GetSky\DemoModule"
+DemoModule.services = false
+DemoModule.config = false
+
+[app]
+def_module = 'DemoModule'
+base_uri = '/'
+
+[mail]
+host = "smtp.localhost"
+port = "25"
+user = "post@localhost"
+password = ""
+
+[session]
+cookie.name = sid
+cookie.lifetime = 31104000
+cookie.path = "/"
+cookie.domain = ""
+cookie.secure = 0
+cookie.httponly = 1
+
+[logger]
+adapter = "\Phalcon\Logger\Adapter\File"
+path = "/app/environment/{environment}/logs/error.log"
+format = "[%date%][%type%] %message%"
+
+[cache]
+cache.cacheDir = "/app/environment/{environment}/cache/"
+cache.lifetime = 86400
+
+[errors]
+e404.controller = "index"
+e404.action = "error404"
+
+```
+
+Файл ```service.ini``` это файл с общими сервисами приложения, которые инициализируются до загрузки модуля. Данный файл экспортируется в ```config.ini``` в переменную ```dependencies```:
+
+```ini
+dependencies = %res:../app/config/services.ini
+
+```
+
+Категория настроек ```bootstrap``` служит для настройки загрузчика приложения. В нем мы указываем, какое имя у сервиса настроек будет в DI, папку где лежат наши модули и название файла, которое будет у главного класса модуля.
+
+Категория ```namespace``` служит для подключения пространств имен. В базовой конфигурации у нас зарегистрировано два дополнительных пространства: ```App\Providers``` для провайдеров сервисов и ```App\Services``` для глобальных сервисов приложения.
+
+Категория ```modules``` является одной из ключивых настроек: в ней мы указываем какие модули необходимо подключить в нашем приложении, а также, если необходимо, можем переопределить настройки модуля и запретить подгружать сервисы модуля. В базовой конфигурации загружаетя модуль ```GetSky\DemoModule``` c именем ```DemoModule```, который подгружается в приложение с помощью ```composer```.
+
+```ini
+DemoModule.services = false 
+DemoModule.config = false
+```
+
+Если ```service``` установить в значение ```true```, то сервисы, которые определяются в модуле, подгружаться не будут.
+
+Настройки ```config``` содержат настройки модуля, которыми после инициализации манипулирует модуль. Вы можете их подменить. Для этого необходимо вместо ```false``` вписать новые настройки модуля. Для удобства, чтобы не переписовать все настройки модуля, вы можете воспользоваться импортом настроек модуля таким образом:
+
+```ini
+DemoModule.config.%class% = GetSky\DemoModule::CONFIG
+DemoModule.config.view.debug = 0
+```
+
+*В принципе, вы можете не указывать что ```service``` и ```config``` равны ```false```, так как это значение по-умолчанию и в базовой конфигурации они упомянуты для примера.*
+
+
+Все последующие группы настроек используются стандартными провайдарами сервисов.
+
+
 Config Loader
 -------------
 Pherlin use universal loader for configuration files, which allows:
