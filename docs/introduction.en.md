@@ -212,9 +212,9 @@ app/
 .   .   services.ini
 ```
 
-Файлы шаблона ```config_%environment%.ini```, где ```%environment%``` - текщее окружение, являются основными файлами настройки приложения. Если вам потребуются, какие-либо, исключительные настройки для определенного окружения, то вы можете их задать именно в этих файлах.
+Files ```config_%environment%.Ini``` (where ```%environment%``` - the current environment) are the main application configuration file. If you require, any exceptional settings for a particular environment, then you can ask them in these files.
 
-Файл ```config.ini``` это файл с общими настройками приложения. Его мы рассмотри более подробно, так как по-умолчанию именно он содержит все настройки, а файл ```config_%environment%.ini``` лишь импортируют этой файл:  
+File ```config.ini``` a file with the general application settings. It will be described in more detail, as it is by default it contains all the settings, and file ```config_%environment%.ini``` just import this file:
 
 ```ini
 dependencies = %res:../app/config/services.ini
