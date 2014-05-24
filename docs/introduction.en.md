@@ -266,7 +266,7 @@ e404.action = "error404"
 
 ```
 
-Файл ```service.ini``` это файл с общими сервисами приложения, которые инициализируются до загрузки модуля. Данный файл экспортируется в ```config.ini``` в переменную ```dependencies```:
+File ```service.ini``` is a file with the general application resources that are initialized before the module. This file is exported to ```config.ini``` in a variable ```dependencies```:
 
 ```ini
 dependencies = %res:../app/config/services.ini
