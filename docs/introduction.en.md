@@ -273,9 +273,9 @@ dependencies = %res:../app/config/services.ini
 
 ```
 
-Категория настроек ```bootstrap``` служит для настройки загрузчика приложения. В нем мы указываем, какое имя у сервиса настроек будет в DI, папку где лежат наши модули и название файла, которое будет у главного класса модуля.
+Category ```bootstrap``` is used to configure loader of the application. In it, we have to specify the name service settings folder where to store our modules and file name, which will be the main module class.
 
-Категория ```namespace``` служит для подключения пространств имен. В базовой конфигурации у нас зарегистрировано два дополнительных пространства: ```App\Providers``` для провайдеров сервисов и ```App\Services``` для глобальных сервисов приложения.
+Category ```namespace``` is used to connect namespaces. In it's basic configuration, we recorded two additional spaces: ```App\Providers``` for providers of services and ```App\Services``` for global application services.
 
 Категория ```modules``` является одной из ключивых настроек: в ней мы указываем какие модули необходимо подключить в нашем приложении, а также, если необходимо, можем переопределить настройки модуля и запретить подгружать сервисы модуля. В базовой конфигурации загружаетя модуль ```GetSky\DemoModule``` c именем ```DemoModule```, который подгружается в приложение с помощью ```composer```.
 
