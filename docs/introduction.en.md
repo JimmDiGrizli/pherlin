@@ -277,26 +277,25 @@ Category ```bootstrap``` is used to configure loader of the application. In it, 
 
 Category ```namespace``` is used to connect namespaces. In it's basic configuration, we recorded two additional spaces: ```App\Providers``` for providers of services and ```App\Services``` for global application services.
 
-Категория ```modules``` является одной из ключивых настроек: в ней мы указываем какие модули необходимо подключить в нашем приложении, а также, если необходимо, можем переопределить настройки модуля и запретить подгружать сервисы модуля. В базовой конфигурации загружаетя модуль ```GetSky\DemoModule``` c именем ```DemoModule```, который подгружается в приложение с помощью ```composer```.
+Category ```modules``` is one of the key settings: here we specify which modules you need to connect to our application, and, if necessary, can override the module and deny services to load module. In the basic configuration should be loaded module ```GetSky\DemoModule``` with name ```DemoModule```, which is loaded into the application using ```composer```.
 
 ```ini
 DemoModule.services = false 
 DemoModule.config = false
 ```
 
-Если ```service``` установить в значение ```true```, то сервисы, которые определяются в модуле, подгружаться не будут.
+If ```service``` be set to ```true```, then the services that are defined in the module will not be loaded.
 
-Настройки ```config``` содержат настройки модуля, которыми после инициализации манипулирует модуль. Вы можете их подменить. Для этого необходимо вместо ```false``` вписать новые настройки модуля. Для удобства, чтобы не переписовать все настройки модуля, вы можете воспользоваться импортом настроек модуля таким образом:
+Settings ```config``` contain module configuration, which manipulates after initialization module. You can replace them. To do this, instead of ```false ``` enter new module settings. For convenience, not to perepisovat all settings module, you can use the import module settings as follows:
 
 ```ini
 DemoModule.config.%class% = GetSky\DemoModule::CONFIG
 DemoModule.config.view.debug = 0
 ```
 
-*В принципе, вы можете не указывать что ```service``` и ```config``` равны ```false```, так как это значение по-умолчанию и в базовой конфигурации они упомянуты для примера.*
+*In general, you can not specify that ```service``` and ```config``` equal ```false```, as it is the default value in the base configuration and they are mentioned for example.*
 
-
-Все последующие группы настроек используются стандартными провайдарами сервисов.
+All of the following groups of settings used standard service providers.
 
 
 Config Loader
