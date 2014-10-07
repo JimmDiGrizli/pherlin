@@ -1,0 +1,47 @@
+dependencies: %res:../app/config/services.yml
+
+bootstrap:
+    path: ../src/
+    module: Module.php
+
+namespaces:
+    App\Providers: ../app/Providers/
+    App\Services: ../app/Services/
+
+modules:
+    DemoModule:
+        namespace: GetSky\DemoModule
+
+app:
+    def_module: DemoModule
+    base_uri: /
+
+mail:
+    host: smtp.localhost
+    port: 25
+    user: post@localhost
+    password: ""
+
+session:
+    cookie:
+        name: sid
+        lifetime: 31104000
+        path: /
+        domain: ""
+        secure: 0
+        httponly: 1
+
+logger:
+    adapter: \Phalcon\Logger\Adapter\File
+    path: /app/environment/{environment}/logs/error.log
+    format: "[%date%][%type%] %message%"
+
+cache:
+    cache:
+        cacheDir: /app/environment/{environment}/cache/
+        lifetime: 86400
+
+errors:
+    e404:
+        controller: index
+        action: error404

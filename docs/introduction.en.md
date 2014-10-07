@@ -3,13 +3,11 @@
 
 What is Pherlin?
 ----------------
-
 Pherlin is an open source, which is a wrapper for a quick start developing applications on proper framework Phalcon. 
 Pherlin is loosely coupled, allowing you to use its objects in your application based on Phalcon.
 
 What gives Pherlin?
 -------------------
-
 Pherlin enables flexibly manage your application by means of configuration files: 
 - possibility to organize different behavior of the program depending on the environment;
 - organize initialization of Dependency Injection through configuration files with support for all native capabilities;
@@ -52,22 +50,6 @@ public/
 .   .htaccess
 .   index.php  
 src/
-.   FrontendModule/
-.   .   Controllers/
-.   .   .   indexController.php
-.   .   Providers/
-.   .   .   DispatcherProvider.php
-.   .   .   MySqlProvider.php
-.   .   .   ViewCacheProvider.php
-.   .   .   ViewProvider.php
-.   .   Resources/
-.   .   .   config/
-.   .   .   views/
-.   .   .       index/
-.   .   .   .   .   about.volt
-.   .   .   .   .   error404.volt
-.   .   .   .   .   index.volt
-.   .   Module.php 
 tests/
 .   codecepton/
 .   ...
@@ -85,13 +67,12 @@ Catalog ```app/``` serves us to store all configuration files (directory ```app/
 
 Catalog ```public/``` contains all application resources (images, css-styles, js-scripts, etc.), as well as php file that will redirect all requests - ```public/index.php```. Also present in the catalog file ```public/codeception.php``` required to run BDD-tests.
 
-Directory ```src/``` contains files with the logic of your application, namely modules. Out of the box already has a preset module - ```FrondendModule```. You can use it or delete and create new module. How to create new modules and delete preset will be written later. Module directory contains a folder ```Controllers``` with controllers of module, ```Providers``` with providers of services module, ```Resources``` with application resources - configuration files and templates.
+Directory `` `src ``` is used to store the modules that you create in your application.
 
 Directory ```tests/``` contains catalogs for testing using Codeception and phpUnit and file with the commands to install the extension Phalcon, which may be necessary when using the CI.
 
 Changing the environment
 ------------------------
-
 Environment default is ```dev ```. To change the environment must be passed as the second argument the name of the desired environment:
 
 ```php
@@ -102,7 +83,6 @@ $app = new Bootstrap(new FactoryDefault(),'prod');
 
 Creating the Module
 -------------------
-
 To create a module, you can use two different approaches: a module inside Pherlin (for this you need to create a directory with the name of the module ```ModuleNameModule``` in the directory ```src/```), or to create a separate project with the module in its IDE and connect the module after composer. The second method is more complicated, but it gives more flexibility to continue using this module. Below is a step by step guide to create your own module:
 
 **Module inside Pherlin**
@@ -115,6 +95,8 @@ To create a module, you can use two different approaches: a module inside Pherli
     .   .   Providers/
     .   .   Resources/
     ```
+    Directory ```src/``` contains files with the logic of your application, namely modules. Out of the box already has a     preset module - ```FrondendModule```. You can use it or delete and create new module. How to create new modules and     delete preset will be written later. Module directory contains a folder ```Controllers``` with controllers of module,     ```Providers``` with providers of services module, ```Resources``` with application resources - configuration files     and templates.
+
 
 2. Now you need to create a master class of module (```Module.php ```) in the root directory ```ModuleNameModule``` with the following contents:
     ```php
@@ -126,121 +108,46 @@ To create a module, you can use two different approaches: a module inside Pherli
     class Module extends ModuleBootstrap
     {   
         const DIR = __DIR__;
+	const NAME = "ModuleName"
         //const CONFIG = '/Resources/options.ini';
         //const SERVICES = '/Resources/services.ini';
     }
     ```
-    The class itself is very simple: it is necessary to override only one constant - ```DIR ```, which indicates the path     to the directory module. Also you can set your path for storing module configuration (constant ```CONFIG ```) and the     list of connected services (constant ```SERVICES ```).
+    The class itself is very simple: it is necessary to override only two constants - ```DIR ``` and ```NAME``` (Name of you module), which indicates the path     to the directory module. Also you can set your path for storing module configuration (constant ```CONFIG ```) and the     list of connected services (constant ```SERVICES ```).
 
-3. Теперь в папке ```Resources``` создадим каталог ```config``` и разместим в ней конфигурационный файл модуля ```config.ini``` следующего содержания:
+3. Now create a module configuration file config.ini in the folder ```Resources/config/```:
     ```ini
-    [volt]
+    [view]
     path = "../app/environment/%environment%/cache/volt/"
     extension = ".volt"
-    stat = 1
-    debug = 1
-    
-    [cache]
-    path = "../app/environment/%environment%/cache/ModuleName/"
-    host = "localhost"
-    port = "11211"
-    
-    [mysql]
-    host = "localhost"
-    username = "root"
-    password = ""
-    name = "mydb"
-    persistent = "true"   
+    [viewCache]
+    path = "../app/environment/%environment%/cache/frontend/" 
     ```
-    В этом файле мы прописали настройки для шаблонизатора, кэшера и данные для подключения к базе данных.
+    In this file we are prescribed settings for view and cache.
     
-4. В той же папке ```Resources/config/``` создаем файл ```services.ini```, который будет содержать информацию о том, какие сервисы требуются для данного модуля:
+4. In the same folder ```Resources/config/``` we create file ```services.ini```, which will contain information about which services are required for this module:
     ```ini
     [dispatcher]
     provider = "GetSky\Phalcon\Provider\DispatcherProvider"
     arg.0.service = "config"
-    arg.1.var = "GetSky\FrontendModule\Controllers"
-    
+    arg.1.var = "GetSky\ModuleName\Controllers"
     [view]
-    provider = "GetSky\FrontendModule\Providers\ViewProvider"
+    provider = "GetSky\Phalcon\Provider\ViewProvider"
     arg.0.service = "config"
-
+    arg.1.var = "ModuleName"
+    [viewCache]
+    provider = "GetSky\Phalcon\Provider\ViewCacheProvider"
+    arg.0.service = "config"
+    arg.1.var = "ModuleName"
     ```
-    Более подробно о том, как создавать сервисы вы сможете прочитать в главе посвящённой phalcon-autoload-services.
+    For more information about how to create services you can read in the chapter devoted to this issue. In this example,     we use the standard Pherlin providers are located in the repository phalcon-skeleton-provider.
 
-5. Теперь нам нужно создать один провайдер для сервиса ```view```. который позволяет нам в модуле использовать шаблонизатор volt или php для формирования страниц. Для этого в папке ```Providers``` создаем файл ```ViewProvider.php```:
+5. Now we create directory ```Resources/views/``` for storing templates used by the service ```view ```.
+
+6. Create the first controller ```IndexController.php``` in directory ```Controllers ```:
     ```php
     <?php
-    namespace GetSky\ModuleNameModule\Providers;
-    
-    use GetSky\FrontendModule\Module;
-    use GetSky\Phalcon\AutoloadServices\Provider;
-    use Phalcon\Config;
-    use Phalcon\Mvc\View;
-    use Phalcon\Mvc\View\Engine\Volt;
-    
-    class ViewProvider implements Provider
-    {
-        /**
-         * @var Config
-         */
-        private $options;
-
-        public function __construct(Config $options)
-        {
-            $this->options = $options;
-        }
-    
-        /**
-         * @return callable
-         */
-        public function getServices()
-        {
-            /**
-             * @var Config $config
-             */
-            $config = $this->options
-                ->get('module-options')
-                ->get(Module::NAME)
-                ->get('volt');
-    
-            return function () use ($config) {
-                $view = new View();
-                $view->setViewsDir(Module::DIR . '/Resources/views/');
-    
-                $view->registerEngines(
-                    [
-                        '.volt' => function ($view) use ($config) {
-                                $volt = new Volt($view);
-    
-                                $options = [
-                                    'compiledPath' => $config->get('path'),
-                                    'compiledSeparator' => '_',
-                                ];
-    
-                                if ($config->debug != 1) {
-                                    $options['compileAlways'] = true;
-                                }
-    
-                                $volt->setOptions($options);
-    
-                                return $volt;
-                            },
-                        '.phtml' => 'Phalcon\Mvc\View\Engine\Php'
-                    ]
-                );
-    
-                return $view;
-            };
-        }
-    } 
-    ```
-6. Теперь создаем каталог ```Resources/views/``` для хранения шаблонов используемых сервисом ```view```.
-
-7. Создаем первый контроллер, к примеру ```IndexController.php``` в каталоге ```Controllers```:
-    ```php
-    <?php
-    namespace GetSky\FrontendModule\Controllers;
+    namespace GetSky\ModuleNameModule\Controllers;
     
     use Phalcon\Mvc\Controller;
     
@@ -259,152 +166,171 @@ To create a module, you can use two different approaches: a module inside Pherli
         }
     }
     ```
-    И создадим, для примера, один шаблон ```Resources/views/index/index.volt```:
+    And create one template ```Resources/views/index/index.volt ```:
     ```html
     <h1>Hi Phalcon!</h1>
     ```
 
-8. После всех этих действий мы должны получить такую структуру файлов в нашем модуле:
+8. After all these steps, we need to get a file structure for our module:
     ```
-src/
-.   ModuleNameModule/
-.   .   Controllers/
-.   .   .   IndexController.php
-.   .   Providers/
-.   .   .   ViewProvider.php
-.   .   Resources/
-.   .   .   config/
-.   .   .   .   config.ini
-.   .   .   .   services.ini
-.   .   .   views/
-.   .   .   .    index/
-.   .   .   .    .    index.volt
-Module.php
-```
+    src/
+    .   ModuleNameModule/
+    .   .   Controllers/
+    .   .   .   IndexController.php
+    .   .   Resources/
+    .   .   .   config/
+    .   .   .   .   config.ini
+    .   .   .   .   services.ini
+    .   .   .   views/
+    .   .   .   .    index/
+    .   .   .   .    .    index.volt
+    Module.php
+    ```
 
-9. Последний шаг заключается в том, что мы свяжем модуль с приложением. Для этого нам необходимо внести одну запись в файл конфигурации приложения. По умолчанию это файл ```app/config/config.ini```:
+9. The final step is that we associate module with the application. To do this, we need to enter one entry in the application configuration file. By default, this file is ```app/config/config.ini```:
     ```ini
     [modules]
-    frontend = "GetSky\FrontendModule"
-    modulename = "GetSky\ModuleNameModule"
+    ModuleName.namespace = "GetSky\ModuleNameModule"
     ```
-    И чтобы сделать наш модуль для роутинга модулем по умочанию:
+    And to make our module for routing module by default:
     ```ini
     [app]
-    #def_module = "frontend"
-    def_module = "modulename"
+    def_module = "ModuleName"
     ```
-    Без этой правки наш модуль доступен будет только по ссылке ```module/index/action```, если же мы сделаем его по умолчанию то по "index/action".
-    
 
-Загрузчик конфигурационных файлов
----------------------------------
-В Pherlin используется универсальный загрузчик конфигурационных файлов, который позволяет:
-- загружать конфигурации в ini, json и yaml форматах;
-- склеивать их между собой и подгружать их друг в друга;
-- подменять переменную ```{environment}``` на текущее окружение приложения.
+Application settings
+--------------------
 
-Стоит заметить, что использование yaml без установленного расширения PECL - yaml (http://pecl.php.net/package/yaml) может заметно замедлить приложение из-за того, что в случаи отсутствия расширения используется пакет ```symfony/yaml```.
+By default, application settings are located in the ```app/config``` and uses the format ```ini```, but you can use any other:
 
-Загрузчик представляет собой отдельный сервис (```getsky/phalcon-config-loader```), который подгружается с помощью composer. Для того, чтобы начать им пользоваться необходимо создать экземпляр класса ```ConfigLoader``` с передачей в его конструктор переменной с текущим окружением.
+```
+app/
+.   config/
+.   .   config.ini
+.   .   config_dev.ini
+.   .   config_prod.ini
+.   .   services.ini
+```
+
+Files ```config_%environment%.Ini``` (where ```%environment%``` - the current environment) are the main application configuration file. If you require, any exceptional settings for a particular environment, then you can ask them in these files.
+
+File ```config.ini``` a file with the general application settings. It will be described in more detail, as it is by default it contains all the settings, and file ```config_%environment%.ini``` just import this file:
+
+```ini
+dependencies = %res:../app/config/services.ini
+
+[bootstrap]
+config-name = 'config'
+path = '../src/'
+module = 'Module.php'
+
+[namespaces]
+App\Providers = "../app/Providers/"
+App\Services = "../app/Services/"
+
+[modules]
+DemoModule.namespace = "GetSky\DemoModule"
+DemoModule.services = false
+DemoModule.config = false
+
+[app]
+def_module = 'DemoModule'
+base_uri = '/'
+
+[mail]
+host = "smtp.localhost"
+port = "25"
+user = "post@localhost"
+password = ""
+
+[session]
+cookie.name = sid
+cookie.lifetime = 31104000
+cookie.path = "/"
+cookie.domain = ""
+cookie.secure = 0
+cookie.httponly = 1
+
+[logger]
+adapter = "\Phalcon\Logger\Adapter\File"
+path = "/app/environment/{environment}/logs/error.log"
+format = "[%date%][%type%] %message%"
+
+[cache]
+cache.cacheDir = "/app/environment/{environment}/cache/"
+cache.lifetime = 86400
+
+[errors]
+e404.controller = "index"
+e404.action = "error404"
+
+```
+
+File ```service.ini``` is a file with the general application resources that are initialized before the module. This file is exported to ```config.ini``` in a variable ```dependencies```:
+
+```ini
+dependencies = %res:../app/config/services.ini
+
+```
+
+Category ```bootstrap``` is used to configure loader of the application. In it, we have to specify the name service settings folder where to store our modules and file name, which will be the main module class.
+
+Category ```namespace``` is used to connect namespaces. In it's basic configuration, we recorded two additional spaces: ```App\Providers``` for providers of services and ```App\Services``` for global application services.
+
+Category ```modules``` is one of the key settings: here we specify which modules you need to connect to our application, and, if necessary, can override the module and deny services to load module. In the basic configuration should be loaded module ```GetSky\DemoModule``` with name ```DemoModule```, which is loaded into the application using ```composer```.
+
+```ini
+DemoModule.services = false 
+DemoModule.config = false
+```
+
+If ```service``` be set to ```true```, then the services that are defined in the module will not be loaded.
+
+Settings ```config``` contain module configuration, which manipulates after initialization module. You can replace them. To do this, instead of ```false ``` enter new module settings. For convenience, not to perepisovat all settings module, you can use the import module settings as follows:
+
+```ini
+DemoModule.config.%class% = GetSky\DemoModule::CONFIG
+DemoModule.config.view.debug = 0
+```
+
+*In general, you can not specify that ```service``` and ```config``` equal ```false```, as it is the default value in the base configuration and they are mentioned for example.*
+
+All of the following groups of settings used standard service providers.
+
+
+Config Loader
+-------------
+Pherlin use universal loader for configuration files, which allows:
+- create a configuration of various formats (ini, yaml, JSON, or any other, for which you will add adapter) via a single method;
+- merge configuration files;
+- replace variable ```{environment}``` on application environment.
+
+It should be noted that the use of yaml without installed extension PECL - [yaml](http://pecl.php.net/package/yaml), may significantly slow down the application due to the fact that in the absence of expansion package is used ```symfony/yaml` ``.
+
+The loader is a individual package [ConfigLoader]((https://github.com/JimmDigrizli/phalcon-config-loader) (```getsky/phalcon-config-loader```), which is loaded with the help of composer. In order to start using it, you must create instance of the class ```ConfigLoader``` with transfer of current environment, or get it from the DI (service `` `config-loader ```).
 
 ```php
 $configLoader = new ConfigLoader($this->environment);
+// or
+$configLoader = $di->get('config-loader');
 $config = $configLoader->create('config.ini');
 ```
 
-Если вы не хотите, чтобы происходил импорт ресурсов (подгрузка других конфигурационных файлов в эту конфигурацию), то вторым параметром необходимо передать булево значение ```false```:
+For more information, see the [README](https://github.com/JimmDiGrizli/phalcon-config-loader/blob/develop/README.md).
 
-```php
-$config = $configLoader->create('config.ini', false);
-```
 
-В Pherlin загрузчик конфигурационных файлов помещается в DI под названием ```config-loader``` после выполнения метода ```run()``` класса ```Bootstrap``` в файле ```/public/index.php```, что позволяет с лёгкостью воспользоваться им в любой части вашего приложения где есть доступ к DI.
-
-**Склейка конфигурационных файлов выглядит следующим образом:**
+Configuring Services
+--------------------
+Pherlin uses a configuration file for registration services in the DI. Configuration services should be located in configuraion of application. That's how it is implemented by default:
 
 ```ini
-#config.ini
-[test]
-test = true
-%res% = import.ini
-
+# /app/config/config.ini
+dependencies = %res:../app/config/services.ini
 ```
-```ini
-#import.ini
-import = "test"
-```
-
-
-При загрузке конфигурационного файла ```config.ini```:
-```php
-[                               
-    'test' => [                 
-        'test' => true,                             
-        'import' => true,       
-        'env' => 'dev'          
-    ]                           
-]                               
-```
-
-**Подгрузка конфигурационных файлов выглядит следующим образом:**
 
 ```ini
-#config.ini
-[test]
-test = true
-exp = %res:import.ini
+# /app/config/services.ini
 
-```
-```ini
-#import.ini
-import = "test"
-```
-
-При загрузке конфигурационного файла ```config.ini```:
-```php
-[
-    'test' => [
-        'test' => true,
-        'exp' => [
-            'import' => true,
-            'env' => 'dev'
-        ]
-    ]
-]                                                        
-```
-
-**Подменять переменную {environment} на текущее окружение приложения:**
-
-```ini
-#config.ini
-[test]
-test = true
-exp = "app/config/%environment%/cache/"
-```
-
-При загрузке конфигурационного файла ```config.ini```, если активно окружение dev:
-```php
-[                               
-    'test' => [                 
-        'test' => true,     
-        'exp' = "app/config/dev/cache/"                                 
-    ]                           
-]
-```
-
-Вы также можете добавлять свои адаптеры конфигурационных файлов. Для этого необходимо вызвать метод ```add()``` с передачей расширения, которое будет обрабатывать данный адаптер и класс адаптера, который должен наследовать класс ```Phalcon\Config```.
-
-```php
-$config = $configLoader->add('xml', 'MyNamespace/XmlConfig');
-```
-
-Автозагрузчик сервисов
-----------------------
-
-Главной фишкой Pherlin является автозагрузка сервисов в DI. Для это используются конфигурационные файлы. Ниже приведен один из таких файлов в формате ini, но вы можете использовать также и yaml и json, либо любой другой, если для него вы задали адаптер в загрузчике конфигурационных файлов (сервис ```config-loader```):
-
-```ini
 [router]
 provider = "GetSky\Phalcon\Provider\RouterProvider"
 arg.0.service = "config"
@@ -418,11 +344,12 @@ call.0.arg.0.var = "24"
 string = "GetSky\Phalcon\Provider\SessionProvider"
 shared = true
 ```
-Возможность инициализации сервисов через конфигурационные файлы в Pherlin обеспечивается по средствам компонента ```phalcon-autoload-services```. 
 
-Зарегистрировать сервисы можно тремя способами:
+The ability to initialize services through configuration files in Pherlin provided by means of component [AutoloadServices](https://github.com/JimmDiGrizli/phalcon-autoload-services).
 
-1. По названию класса. Такой способ не позволяет передавать аргументы для конструктора класса или настраивать параметры.
+There are three ways to register services:
+
+1. By the class name. This method does not allow to pass arguments to a constructor or adjust parameters.
     
     ```ini
     ...
@@ -431,8 +358,7 @@ shared = true
     ...  
     ```
     
-2. Регистрация экземпляра напрямую. При использовании этого способа в контейнер зависимостей помещается уже готовый объект.
-
+2. Registering an instance directly. When using this method the container is placed dependency already finished object.
     ```php
     ...
     [request]
@@ -440,8 +366,7 @@ shared = true
     ...
     ```
 
-3. Через провайдера сервисов. Который должен реализовывать интерфейс ```GetSky\Phalcon\AutoloadServices```. По замыслу, провайдеры являются посредниками для регистрации анонимных функций в контейнере зависимостей, но при этом имеют возможность реализовать любой другой способ, который поддерживает Phalcon. 
-    
+3. Through the service provider. Which must implement the interface ```GetSky\Phalcon\AutoloadServices\Provider```. According to the plan, providers are intermediaries for registration of anonymous functions in the container dependency, but have the opportunity to realize any other way that supports Phalcon.
     ```ini
     ...
     [route]
@@ -449,7 +374,7 @@ shared = true
     ...    
     ```
     
-Для второго и третьего способа возможно указать какие аргументы будут переданы в конструктор и вызывать методы после его создания и до помещения в DI. Ниже приведен пример, как это можно реализовать на ini:
+For the second and third method possible to specify which arguments are passed to the constructor and invoke methods since its inception and prior to placement in the DI. Below is an example of how it can be implemented on the ini:
 
 ```ini
 [ferst-service]
@@ -463,4 +388,12 @@ arg.4.object.arg.0.var = "42"
 arg.4.object.call.0.method = "run"
 ```
 
-В приведенном выше примере, мы регистрируем сервис ```SomeNamespace\FerstClass``` под именем ```fest-service``` и передаем 5 аргументов: сервис ```config```, переменную ```24```, контейнер зависимостей (объект реализующий интерфейс ```DiInterface```, который был передан в конструктор ```Botstrap``` в файле ```/public/index.php```), сервис ```shared-services``` вызванный через метод ```getShared``` и экземпляр класса ```SomeNamespace\SecondClass```, который сначала создается с передачей в конструктор аргумента ```42```, и вызовом метода ```run```, а уже затем передается в конструктор нашего сервиса пятым параметром.
+In the above example, we register the service ```SomeNamespace\FerstClass``` under the name ```fest-service ``` and pass 5 arguments: the service ```config```, variable ```24```, DI (object implements ```DiInterface```, which was passed to the constructor ```Botstrap ``` in file ```/public/index.php```), service ```shared-services``` caused by the method ``` getShared``` and an instance of ```SomeNamespace\SecondClass```, which was first created with transfer ```42``` and calling ```run```.
+
+Running Codeception
+-------------------
+To run the tests necessary to go to ```public``` folder and run:
+
+```bash
+bash ../vendor/bin/codecept run --config ../tests/codeception
+```

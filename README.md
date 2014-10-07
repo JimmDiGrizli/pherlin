@@ -23,7 +23,13 @@ Installation
 To use Pherlin, you must have installed php 5.4 or later version, Phalcon 1.2.4 or later version, and must be installed composer to install dependencies.
 
 Pherlin can be downloaded in two ways:
-- use composer by running the command ```composer create-project getsky/pherlin myproject -s dev```;
+- use composer by running the command ```composer create-project getsky/pherlin myproject -s stable```;
 
 - or by downloading the archive project from github and install the dependency packages by runniing the command ```composer update ```.
 
+
+Documentation
+-------------
+Complete documentation: 
+* [Russian](https://github.com/JimmDiGrizli/pherlin/blob/develop/docs/introduction.ru.md)
+* [English](https://github.com/JimmDiGrizli/pherlin/blob/develop/docs/introduction.en.md)
