@@ -11,17 +11,19 @@
     ],
     "require": {
         "ext-phalcon": ">=1.2.4,<2",
-        "phalcon/incubator": "dev-master",
-        "phpunit/phpunit": "4.1.*",
-        "codeception/codeception": "*",
 
-        "getsky/phalcon-bootstrap": "1.3.x",
-        "getsky/phalcon-skeleton-provider": ">=1.0.1",
-        "getsky/pherlin-demo-module": "dev-master"
+        "getsky/phalcon-bootstrap": "1.4.x",
+        "getsky/phalcon-skeleton-provider": ">=1.0.2",
+        "getsky/pherlin-demo-module": "1.0.x",
+        "ovr/phalcon-pretty-exceptions": "dev-master"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "4.3.*",
+        "codeception/codeception": "*"
     },
     "extra": {
         "branch-alias": {
-            "dev-develop": "1.3.x-dev"
+            "dev-develop": "1.4.x-dev"
         }
     },
     "minimum-stability": "dev",

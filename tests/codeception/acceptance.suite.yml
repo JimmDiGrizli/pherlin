@@ -12,4 +12,4 @@ modules:
         - WebHelper
     config:
         PhpBrowser:
-            url: 'http://becoach3.ru'
+            url: 'http://pherlin'

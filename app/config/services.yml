@@ -1,0 +1,17 @@
+router:
+    provider: GetSky\Phalcon\Provider\RouterProvider
+    arg:
+        - service: config
+
+url:
+    provider: GetSky\Phalcon\Provider\UrlProvider
+    arg:
+        - service: config
+
+session:
+    provider: GetSky\Phalcon\Provider\SessionProvider
+
+logger:
+    provider: GetSky\Phalcon\Provider\LoggerProvider
+    arg:
+        - service: "config"
