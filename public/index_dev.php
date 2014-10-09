@@ -8,6 +8,7 @@ require_once '../vendor/autoload.php';
 use GetSky\Phalcon\Bootstrap\Bootstrap;
 use Phalcon\DI\FactoryDefault;
 
+GetSky\Phalcon\Utils\PrettyExceptions::listenError();
 (new \Phalcon\Debug())->listen();
 
 $app = new Bootstrap(new FactoryDefault());
