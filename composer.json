@@ -15,7 +15,7 @@
         "getsky/phalcon-bootstrap": "1.4.x",
         "getsky/phalcon-skeleton-provider": ">=1.0.2",
         "getsky/pherlin-demo-module": "1.0.x",
-        "ovr/phalcon-pretty-exceptions": "dev-master"
+        "getsky/pretty-exceptions": "dev-master"
     },
     "require-dev": {
         "phpunit/phpunit": "4.3.*",
@@ -23,7 +23,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-develop": "1.4.x-dev"
+            "dev-develop": "1.5.x-dev"
         }
     },
     "minimum-stability": "dev",
