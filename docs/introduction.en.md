@@ -230,7 +230,7 @@ App\Services = "../app/Services/"
 
 [modules]
 DemoModule.namespace = "GetSky\DemoModule"
-DemoModule.services = false
+DemoModule.global_services = false
 DemoModule.config = false
 
 [app]
@@ -280,7 +280,7 @@ Category ```namespace``` is used to connect namespaces. In it's basic configurat
 Category ```modules``` is one of the key settings: here we specify which modules you need to connect to our application, and, if necessary, can override the module and deny services to load module. In the basic configuration should be loaded module ```GetSky\DemoModule``` with name ```DemoModule```, which is loaded into the application using ```composer```.
 
 ```ini
-DemoModule.services = false 
+DemoModule.global_services = false 
 DemoModule.config = false
 ```
 
@@ -293,7 +293,7 @@ DemoModule.config.%class% = GetSky\DemoModule::CONFIG
 DemoModule.config.view.debug = 0
 ```
 
-*In general, you can not specify that ```service``` and ```config``` equal ```false```, as it is the default value in the base configuration and they are mentioned for example.*
+*In general, you can not specify that ```global_service``` and ```config``` equal ```false```, as it is the default value in the base configuration and they are mentioned for example.*
 
 All of the following groups of settings used standard service providers.
 
