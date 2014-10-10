@@ -1,4 +1,5 @@
-dependencies: %res:../app/config/services.yml
+dependencies:
+    %res%: ../app/config/services.yml
 
 bootstrap:
     path: ../src/

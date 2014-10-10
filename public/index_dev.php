@@ -5,16 +5,19 @@ ini_set("display_startup_errors", 1);
 
 require_once '../vendor/autoload.php';
 
-use DebugBar\StandardDebugBar;
 use GetSky\Phalcon\Bootstrap\Bootstrap;
 use Phalcon\DI\FactoryDefault;
 
 GetSky\Phalcon\Utils\PrettyExceptions::listenError();
 (new \Phalcon\Debug())->listen();
-$debug = (new StandardDebugBar())->getJavascriptRenderer();
-$debug->setBaseUrl('//rawgit.com/maximebf/php-debugbar/master/src/DebugBar/Resources/');
 
-$app = new Bootstrap(new FactoryDefault());
+$dic = new FactoryDefault();
+$app = new Bootstrap($dic);
 $app->setCacheable(false);
 
-echo $app->run().$debug->renderHead().$debug->render();
+echo $app->run();
+
+$debug = $dic->get('debugbar')->getJavascriptRenderer();
+$debug->setBaseUrl('//rawgit.com/maximebf/php-debugbar/master/src/DebugBar/Resources/');
+
+echo $debug->renderHead().$debug->render();
