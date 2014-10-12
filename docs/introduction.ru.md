@@ -319,6 +319,12 @@ $configLoader = new ConfigLoader($this->environment);
 $config = $configLoader->create('config.ini');
 ```
 
+Также, вы можете создвать объект настроек из строки:
+```php
+$string = "foo.bar = true";
+$config = $configLoader->fromText($string, 'ini');
+```
+
 Если вы не хотите, чтобы происходил импорт ресурсов (подгрузка других конфигурационных файлов в эту конфигурацию), то вторым параметром необходимо передать булево значение ```false```:
 
 ```php
