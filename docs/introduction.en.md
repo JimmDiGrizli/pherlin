@@ -28,27 +28,24 @@ As well as Phalcon, Pherlin does not require a certain directory structure, you 
 ```
 app/
 .   config/
-.   .   config.ini
-.   .   config_dev.ini
-.   .   config_prod.ini
-.   .   services.ini
+.   .   config.yml
+.   .   config_dev.yml
+.   .   config_prod.yml
+.   .   services.yml
+.   .   services_dev.yml
 .   environment/
 .   .   dev/
 .   .   .   cache/
-.   .   .   .   frontend/
 .   .   .   .   volt/
 .   .   prod/
 .   .   .   cache/
-.   .   .   .   frontend/
 .   .   .   .   volt/
 .   Providers/
 .   Services/
 public/
-.   img/
-.   css/
-.   js/
 .   .htaccess
 .   index.php  
+.   index_dev.php
 src/
 tests/
 .   codecepton/
@@ -65,15 +62,17 @@ composer.json
 
 Catalog ```app/``` serves us to store all configuration files (directory ```app/config/```), which relate to the entire application (all modules). Catalog ```app/environment ``` is used for various services cache our application. Also, by default, are already reserved two directories for user services and providers: ```app/Providers/``` and ```app/Services /``` respectively.
 
-Catalog ```public/``` contains all application resources (images, css-styles, js-scripts, etc.), as well as php file that will redirect all requests - ```public/index.php```. Also present in the catalog file ```public/codeception.php``` required to run BDD-tests.
+Catalog ```public/``` contains all application resources (images, css-styles, js-scripts, etc.), as well as php file that will redirect all requests - ```public/index.php```. Also present in the catalog file ```public/index_dev.php``` required to run to the application in the develop environment with disabled caching and debug panel.
 
-Directory `` `src ``` is used to store the modules that you create in your application.
+Directory ```src ``` is used to store the modules that you create in your application.
 
 Directory ```tests/``` contains catalogs for testing using Codeception and phpUnit and file with the commands to install the extension Phalcon, which may be necessary when using the CI.
 
 Changing the environment
 ------------------------
-Environment default is ```dev ```. To change the environment must be passed as the second argument the name of the desired environment:
+We take care of you and added two environments and two files: ```index.php``` and ```index_dev.php``` with setting up the environment. But if you want to add another environment, then you need to create a new file ```index_{environment}.php```.
+
+Environment is the default ```dev``` in phalcon-bootstrap. To change the environment must be passed as the second argument the name of the desired environment:
 
 ```php
 #/public/index.php
