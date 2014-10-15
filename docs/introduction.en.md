@@ -108,36 +108,39 @@ To create a module, you can use two different approaches: a module inside Pherli
     {   
         const DIR = __DIR__;
 	const NAME = "ModuleName"
-        //const CONFIG = '/Resources/options.ini';
-        //const SERVICES = '/Resources/services.ini';
+        //const CONFIG = '/Resources/options.yml';
+        //const SERVICES = '/Resources/services.yml';
     }
     ```
     The class itself is very simple: it is necessary to override only two constants - ```DIR ``` and ```NAME``` (Name of you module), which indicates the path     to the directory module. Also you can set your path for storing module configuration (constant ```CONFIG ```) and the     list of connected services (constant ```SERVICES ```).
 
 3. Now create a module configuration file config.ini in the folder ```Resources/config/```:
-    ```ini
-    [view]
-    path = "../app/environment/%environment%/cache/volt/"
-    extension = ".volt"
-    [viewCache]
-    path = "../app/environment/%environment%/cache/frontend/" 
+    ```yml
+    view:
+        path: "../app/environment/%environment%/cache/volt/"
+        extension: ".volt"
+    viewCache:
+        path: "../app/environment/%environment%/cache/frontend/" 
     ```
     In this file we are prescribed settings for view and cache.
     
-4. In the same folder ```Resources/config/``` we create file ```services.ini```, which will contain information about which services are required for this module:
-    ```ini
-    [dispatcher]
-    provider = "GetSky\Phalcon\Provider\DispatcherProvider"
-    arg.0.service = "config"
-    arg.1.var = "GetSky\ModuleName\Controllers"
-    [view]
-    provider = "GetSky\Phalcon\Provider\ViewProvider"
-    arg.0.service = "config"
-    arg.1.var = "ModuleName"
-    [viewCache]
-    provider = "GetSky\Phalcon\Provider\ViewCacheProvider"
-    arg.0.service = "config"
-    arg.1.var = "ModuleName"
+4. In the same folder ```Resources/config/``` we create file ```services.yml```, which will contain information about which services are required for this module:
+   ```yml
+    dispatcher:
+        provider: "GetSky\Phalcon\Provider\DispatcherProvider"
+        arg:
+            - service: "config"
+            - var: "GetSky\ModuleNameModule\Controllers"
+    view:
+        provider: "GetSky\Phalcon\Provider\ViewProvider"
+        arg:
+            - service: "config"
+            - var: "ModuleName"
+    viewCache:
+        provider: "GetSky\Phalcon\Provider\ViewCacheProvider"
+        arg:
+            - service: "config"
+            - var: "ModuleName"
     ```
     For more information about how to create services you can read in the chapter devoted to this issue. In this example,     we use the standard Pherlin providers are located in the repository phalcon-skeleton-provider.
 
@@ -178,29 +181,30 @@ To create a module, you can use two different approaches: a module inside Pherli
     .   .   .   IndexController.php
     .   .   Resources/
     .   .   .   config/
-    .   .   .   .   config.ini
-    .   .   .   .   services.ini
+    .   .   .   .   config.yml
+    .   .   .   .   services.yml
     .   .   .   views/
     .   .   .   .    index/
     .   .   .   .    .    index.volt
     Module.php
     ```
 
-9. The final step is that we associate module with the application. To do this, we need to enter one entry in the application configuration file. By default, this file is ```app/config/config.ini```:
-    ```ini
-    [modules]
-    ModuleName.namespace = "GetSky\ModuleNameModule"
+9. The final step is that we associate module with the application. To do this, we need to enter one entry in the application configuration file. By default, this file is ```app/config/config.yml```:
+    ```yml
+    modules:
+        ModuleName:
+            namespace: "GetSky\ModuleNameModule"
     ```
     And to make our module for routing module by default:
-    ```ini
-    [app]
-    def_module = "ModuleName"
+    ```yml
+    app:
+        def_module: "ModuleName"
     ```
 
 Application settings
 --------------------
 
-By default, application settings are located in the ```app/config``` and uses the format ```ini```, but you can use any other:
+By default, application settings are located in the ```app/config``` and uses the format ```yml```, but you can use any other:
 
 ```
 app/
