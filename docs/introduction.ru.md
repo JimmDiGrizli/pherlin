@@ -111,36 +111,39 @@ $app = new Bootstrap(new FactoryDefault(),'prod');
     {   
         const DIR = __DIR__;
 	const NAME = "ModuleName"
-        //const CONFIG = '/Resources/options.ini';
-        //const SERVICES = '/Resources/services.ini';
+        //const CONFIG = '/Resources/options.yml';
+        //const SERVICES = '/Resources/services.yml';
     }
     ```
 Сам класс очень прост: в нем необходимо переопределить всего две константы - ```DIR``` и ```NAME``` (название вашего модуля), которая указывает на путь к каталогу модуля. Также вы можете задать свои пути для хранения конфигурации модуля (константа ```CONFIG```) и списка подключаемых сервисов (константа ```SERVICES```).
 
-3. Теперь в папке ```Resources``` создадим каталог ```config``` и разместим в ней конфигурационный файл модуля ```config.ini``` следующего содержания:
-    ```ini
-    [view]
-    path = "../app/environment/%environment%/cache/volt/"
-    extension = ".volt"
-    [viewCache]
-    path = "../app/environment/%environment%/cache/frontend/" 
+3. Теперь в папке ```Resources``` создадим каталог ```config``` и разместим в ней конфигурационный файл модуля ```config.yml``` следующего содержания:
+    ```yml
+    view:
+        path: "../app/environment/%environment%/cache/volt/"
+        extension: ".volt"
+    viewCache:
+        path: "../app/environment/%environment%/cache/frontend/" 
     ```
     В этом файле мы прописали настройки для шаблонизатора и его механизма кэширования.
     
-4. В той же папке ```Resources/config/``` создаем файл ```services.ini```, который будет содержать информацию о том, какие сервисы требуются для данного модуля:
-   ```ini
-    [dispatcher]
-    provider = "GetSky\Phalcon\Provider\DispatcherProvider"
-    arg.0.service = "config"
-    arg.1.var = "GetSky\ModuleNameModule\Controllers"
-    [view]
-    provider = "GetSky\Phalcon\Provider\ViewProvider"
-    arg.0.service = "config"
-    arg.1.var = "ModuleName"
-    [viewCache]
-    provider = "GetSky\Phalcon\Provider\ViewCacheProvider"
-    arg.0.service = "config"
-    arg.1.var = "ModuleName"
+4. В той же папке ```Resources/config/``` создаем файл ```services.yml```, который будет содержать информацию о том, какие сервисы требуются для данного модуля:
+   ```yml
+    dispatcher:
+        provider: "GetSky\Phalcon\Provider\DispatcherProvider"
+        arg:
+            - service: "config"
+            - var: "GetSky\ModuleNameModule\Controllers"
+    view:
+        provider: "GetSky\Phalcon\Provider\ViewProvider"
+        arg:
+            - service: "config"
+            - var: "ModuleName"
+    viewCache:
+        provider: "GetSky\Phalcon\Provider\ViewCacheProvider"
+        arg:
+            - service: "config"
+            - var: "ModuleName"
     ```
     Более подробно о том, как создавать сервисы вы сможете прочитать в главе посвященной данному вопросу. Здесь, для         примера, мы использовали стандартные провайдеры Pherlin, которые можно найти в репозитории phalcon-skeleton-provider.
 
@@ -181,30 +184,31 @@ $app = new Bootstrap(new FactoryDefault(),'prod');
     .   .   .   IndexController.php
     .   .   Resources/
     .   .   .   config/
-    .   .   .   .   config.ini
-    .   .   .   .   services.ini
+    .   .   .   .   config.yml
+    .   .   .   .   services.yml
     .   .   .   views/
     .   .   .   .    index/
     .   .   .   .    .    index.volt
     Module.php
     ```
 
-9. Последний шаг заключается в том, что мы свяжем модуль с приложением. Для этого нам необходимо внести одну запись в файл конфигурации приложения. По умолчанию это файл ```app/config/config.ini```:
-    ```ini
-    [modules]
-    ModuleName.namespace = "GetSky\ModuleNameModule"
+9. Последний шаг заключается в том, что мы свяжем модуль с приложением. Для этого нам необходимо внести одну запись в файл конфигурации приложения. По умолчанию это файл ```app/config/config.yml```:
+    ```yml
+    modules:
+        ModuleName:
+            namespace: "GetSky\ModuleNameModule"
     ```
     И чтобы сделать наш модуль для роутинга модулем по умочанию:
-    ```ini
-    [app]
-    def_module = "ModuleName"
+    ```yml
+    app:
+        def_module: "ModuleName"
     ```
     Без этой правки наш модуль доступен будет только по ссылке ```module/index/action```, если же мы сделаем его по умолчанию то по "index/action".
     
 Настройки приложения в Pherlin
 -----------------------------
 
-По-умолчанию, настройки приложения находятся в папке ```app/config``` и используется формат ```ini```, но вы можете использовать любой другой:
+По-умолчанию, настройки приложения находятся в папке ```app/config``` и используется формат ```yml```, но вы можете использовать любой другой:
 
 ```
 app/
