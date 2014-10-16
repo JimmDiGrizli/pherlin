@@ -213,71 +213,73 @@ $app = new Bootstrap(new FactoryDefault(),'prod');
 ```
 app/
 .   config/
-.   .   config.ini
-.   .   config_dev.ini
-.   .   config_prod.ini
-.   .   services.ini
+.   .   config.yml
+.   .   config_dev.yml
+.   .   config_prod.yml
+.   .   services.yml
+.   .   services_dev.yml
 ```
 
-Файлы шаблона ```config_%environment%.ini```, где ```%environment%``` - текущее окружение, являются основными файлами настройки приложения. Если вам потребуются, какие-либо, исключительные настройки для определенного окружения, то вы можете их задать именно в этих файлах.
+Файлы шаблона ```config_%environment%.yml```, где ```%environment%``` - текущее окружение, являются основными файлами настройки приложения. Если вам потребуются, какие-либо, исключительные настройки для определенного окружения, то вы можете их задать именно в этих файлах.
 
-Файл ```config.ini``` это файл с общими настройками приложения. Его мы рассмотри более подробно, так как по-умолчанию именно он содержит все настройки, а файл ```config_%environment%.ini``` лишь импортируют этой файл:  
+Файл ```config.yml``` это файл с общими настройками приложения. Его мы рассмотри более подробно, так как по-умолчанию именно он содержит все настройки, а файл ```config_%environment%.yml``` лишь импортируют этой файл:  
 
 ```ini
-dependencies = %res:../app/config/services.ini
+dependencies:
+    %res%: ../app/config/services.yml
 
-[bootstrap]
-config-name = 'config'
-path = '../src/'
-module = 'Module.php'
+bootstrap:
+    path: ../src/
+    module: Module.php
 
-[namespaces]
-App\Providers = "../app/Providers/"
-App\Services = "../app/Services/"
+namespaces:
+    App\Providers: ../app/Providers/
+    App\Services: ../app/Services/
 
-[modules]
-DemoModule.namespace = "GetSky\DemoModule"
-DemoModule.global_services = false
-DemoModule.config = false
+modules:
+    DemoModule:
+        namespace: GetSky\DemoModule
 
-[app]
-def_module = 'DemoModule'
-base_uri = '/'
+app:
+    def_module: DemoModule
+    base_uri: /
 
-[mail]
-host = "smtp.localhost"
-port = "25"
-user = "post@localhost"
-password = ""
+mail:
+    host: smtp.localhost
+    port: 25
+    user: post@localhost
+    password: ""
 
-[session]
-cookie.name = sid
-cookie.lifetime = 31104000
-cookie.path = "/"
-cookie.domain = ""
-cookie.secure = 0
-cookie.httponly = 1
+session:
+    cookie:
+        name: sid
+        lifetime: 31104000
+        path: /
+        domain: ""
+        secure: 0
+        httponly: 1
 
-[logger]
-adapter = "\Phalcon\Logger\Adapter\File"
-path = "/app/environment/{environment}/logs/error.log"
-format = "[%date%][%type%] %message%"
+logger:
+    adapter: \Phalcon\Logger\Adapter\File
+    path: /app/environment/{environment}/logs/error.log
+    format: "[%date%][%type%] %message%"
 
-[cache]
-cache.cacheDir = "/app/environment/{environment}/cache/"
-cache.lifetime = 86400
+cache:
+    cache:
+        cacheDir: /app/environment/{environment}/cache/
+        lifetime: 86400
 
-[errors]
-e404.controller = "index"
-e404.action = "error404"
-
+errors:
+    e404:
+        controller: index
+        action: error404
 ```
 
-Файл ```service.ini``` это файл с общими сервисами приложения, которые инициализируются до загрузки модуля. Данный файл экспортируется в ```config.ini``` в переменную ```dependencies```:
+Файл ```service.yml``` это файл с общими сервисами приложения, которые инициализируются до загрузки модуля. Данный файл экспортируется в ```config.yml``` в переменную ```dependencies```:
 
 ```ini
-dependencies = %res:../app/config/services.ini
-
+dependencies:
+    %res%: ../app/config/services.yml
 ```
 
 Категория настроек ```bootstrap``` служит для настройки загрузчика приложения. В нем мы указываем, какое имя у сервиса настроек будет в DI, папку где лежат наши модули и название файла, которое будет у главного класса модуля.
@@ -286,18 +288,24 @@ dependencies = %res:../app/config/services.ini
 
 Категория ```modules``` является одной из ключевых настроек: в ней мы указываем какие модули необходимо подключить в нашем приложении, а также, если необходимо, можем переопределить настройки модуля и запретить подгружать сервисы модуля. В базовой конфигурации загружается модуль ```GetSky\DemoModule``` c именем ```DemoModule```, который подгружается в приложение с помощью ```composer```.
 
-```ini
-DemoModule.global_services = false 
-DemoModule.config = false
+```yml
+modules:
+    DemoModule:
+        namespace: GetSky\DemoModule
+	    global_services: false 
+	    config: false
 ```
 
 Если ```global_service``` установить в значение ```true```, то сервисы, которые определяются в модуле, подгружаться не будут.
 
 Настройки ```config``` содержат настройки модуля, которыми после инициализации манипулирует модуль. Вы можете их подменить. Для этого необходимо вместо ```false``` вписать новые настройки модуля. Для удобства, чтобы не переписовать все настройки модуля, вы можете воспользоваться импортом настроек модуля таким образом:
 
-```ini
-DemoModule.config.%class% = GetSky\DemoModule::CONFIG
-DemoModule.config.view.debug = 0
+```yml
+DemoModule:
+    config
+        %class%: GetSky\DemoModule::CONFIG
+        view:
+            debug = 0
 ```
 
 *В принципе, вы можете не указывать что ```global_service``` и ```config``` равны ```false```, так как это значение по-умолчанию и в базовой конфигурации они упомянуты для примера.*
