@@ -209,70 +209,72 @@ By default, application settings are located in the ```app/config``` and uses th
 ```
 app/
 .   config/
-.   .   config.ini
-.   .   config_dev.ini
-.   .   config_prod.ini
-.   .   services.ini
+.   .   config.yml
+.   .   config_dev.yml
+.   .   config_prod.yml
+.   .   services.yml
 ```
 
-Files ```config_%environment%.Ini``` (where ```%environment%``` - the current environment) are the main application configuration file. If you require, any exceptional settings for a particular environment, then you can ask them in these files.
+Files ```config_%environment%.yml``` (where ```%environment%``` - the current environment) are the main application configuration file. If you require, any exceptional settings for a particular environment, then you can ask them in these files.
 
-File ```config.ini``` a file with the general application settings. It will be described in more detail, as it is by default it contains all the settings, and file ```config_%environment%.ini``` just import this file:
+File ```config.yml``` a file with the general application settings. It will be described in more detail, as it is by default it contains all the settings, and file ```config_%environment%.yml``` just import this file:
 
-```ini
-dependencies = %res:../app/config/services.ini
+```yml
+dependencies:
+    %res%: ../app/config/services.yml
 
-[bootstrap]
-config-name = 'config'
-path = '../src/'
-module = 'Module.php'
+bootstrap:
+    path: ../src/
+    module: Module.php
 
-[namespaces]
-App\Providers = "../app/Providers/"
-App\Services = "../app/Services/"
+namespaces:
+    App\Providers: ../app/Providers/
+    App\Services: ../app/Services/
 
-[modules]
-DemoModule.namespace = "GetSky\DemoModule"
-DemoModule.global_services = false
-DemoModule.config = false
+modules:
+    DemoModule:
+        namespace: GetSky\DemoModule
 
-[app]
-def_module = 'DemoModule'
-base_uri = '/'
+app:
+    def_module: DemoModule
+    base_uri: /
 
-[mail]
-host = "smtp.localhost"
-port = "25"
-user = "post@localhost"
-password = ""
+mail:
+    host: smtp.localhost
+    port: 25
+    user: post@localhost
+    password: ""
 
-[session]
-cookie.name = sid
-cookie.lifetime = 31104000
-cookie.path = "/"
-cookie.domain = ""
-cookie.secure = 0
-cookie.httponly = 1
+session:
+    cookie:
+        name: sid
+        lifetime: 31104000
+        path: /
+        domain: ""
+        secure: 0
+        httponly: 1
 
-[logger]
-adapter = "\Phalcon\Logger\Adapter\File"
-path = "/app/environment/{environment}/logs/error.log"
-format = "[%date%][%type%] %message%"
+logger:
+    adapter: \Phalcon\Logger\Adapter\File
+    path: /app/environment/{environment}/logs/error.log
+    format: "[%date%][%type%] %message%"
 
-[cache]
-cache.cacheDir = "/app/environment/{environment}/cache/"
-cache.lifetime = 86400
+cache:
+    cache:
+        cacheDir: /app/environment/{environment}/cache/
+        lifetime: 86400
 
-[errors]
-e404.controller = "index"
-e404.action = "error404"
-
+errors:
+    e404:
+        controller: index
+        action: error404
 ```
 
-File ```service.ini``` is a file with the general application resources that are initialized before the module. This file is exported to ```config.ini``` in a variable ```dependencies```:
+File ```service.yml``` is a file with the general application resources that are initialized before the module. This file is exported to ```config.yml``` in a variable ```dependencies```:
 
-```ini
-dependencies = %res:../app/config/services.ini
+```yml
+dependencies:
+    %res%: ../app/config/services.yml
 
 ```
 
@@ -282,19 +284,27 @@ Category ```namespace``` is used to connect namespaces. In it's basic configurat
 
 Category ```modules``` is one of the key settings: here we specify which modules you need to connect to our application, and, if necessary, can override the module and deny services to load module. In the basic configuration should be loaded module ```GetSky\DemoModule``` with name ```DemoModule```, which is loaded into the application using ```composer```.
 
-```ini
-DemoModule.global_services = false 
-DemoModule.config = false
+
+```yml
+modules:
+    DemoModule:
+        namespace: GetSky\DemoModule
+	    global_services: false 
+	    config: false
 ```
 
 If ```service``` be set to ```true```, then the services that are defined in the module will not be loaded.
 
 Settings ```config``` contain module configuration, which manipulates after initialization module. You can replace them. To do this, instead of ```false ``` enter new module settings. For convenience, not to perepisovat all settings module, you can use the import module settings as follows:
 
-```ini
-DemoModule.config.%class% = GetSky\DemoModule::CONFIG
-DemoModule.config.view.debug = 0
+```yml
+DemoModule:
+    config
+        %class%: GetSky\DemoModule::CONFIG
+        view:
+            debug = 0
 ```
+
 
 *In general, you can not specify that ```global_service``` and ```config``` equal ```false```, as it is the default value in the base configuration and they are mentioned for example.*
 
