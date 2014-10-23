@@ -321,8 +321,6 @@ DemoModule:
 - склеивать их между собой и подгружать их друг в друга;
 - подменять переменную ```{environment}``` на текущее окружение приложения.
 
-Стоит заметить, что использование yaml без установленного расширения PECL - yaml (http://pecl.php.net/package/yaml) может заметно замедлить приложение из-за того, что в случаи отсутствия расширения используется пакет ```symfony/yaml```.
-
 Загрузчик представляет собой отдельный сервис (```getsky/phalcon-config-loader```), который подгружается с помощью composer. Для того, чтобы начать им пользоваться необходимо создать экземпляр класса ```ConfigLoader``` с передачей в его конструктор переменной с текущим окружением.
 
 ```php
@@ -427,89 +425,76 @@ $config = $configLoader->add('xml', 'MyNamespace/XmlConfig');
 
 Pherlin использует конфигурационный файл для регистрации сервисов в контейнере зависимостей. Настройка сервисов должна находится в конфигурации приложения, в переменной ```dependencies```. Вот как это реализовано в Pherlin по-умолчанию:
 
-```ini
-# /app/config/config.ini
-dependencies = %res:../app/config/services.ini
-```
-
-```ini
-# /app/config/services.ini
-
-[router]
-provider = "GetSky\Phalcon\Provider\RouterProvider"
-arg.0.service = "config"
-
-[callsample]
-object = "CallService"
-call.0.method = "run"
-call.0.arg.0.var = "24"
-
-[session]
-string = "GetSky\Phalcon\Provider\SessionProvider"
-shared = true
+```yml
+dependencies:
+    %res%: ../app/config/services.yml
 ```
 
 
-```ini
-[router]
-provider = "GetSky\Phalcon\Provider\RouterProvider"
-arg.0.service = "config"
+```yml
+# /app/config/services.yml
+router:
+    provider: GetSky\Phalcon\Provider\RouterProvider
+    arg:
+        - service: config
 
-[callsample]
-object = "CallService"
-call.0.method = "run"
-call.0.arg.0.var = "24"
+url:
+    provider: GetSky\Phalcon\Provider\UrlProvider
+    arg:
+        - service: config
 
-[session]
-string = "GetSky\Phalcon\Provider\SessionProvider"
-shared = true
+session:
+    provider: GetSky\Phalcon\Provider\SessionProvider
+
+logger:
+    provider: GetSky\Phalcon\Provider\LoggerProvider
+    arg:
+        - service: "config"
 ```
+
 Возможность инициализации сервисов через конфигурационные файлы в Pherlin обеспечивается по средствам компонента [AutoloadServices](https://github.com/JimmDiGrizli/phalcon-autoload-services).
 
 Есть три способа регистрации сервисов:
 
 1. По названию класса. Такой способ не позволяет передавать аргументы для конструктора класса или настраивать параметры.
     
-    ```ini
-    ...
-    [response]
-    string = "Phalcon\Http\Response"
-    ...  
+    ```yml
+    response:
+        string: "Phalcon\Http\Response"
     ```
     
 2. Регистрация экземпляра напрямую. При использовании этого способа в контейнер зависимостей помещается уже готовый объект.
 
-    ```php
-    ...
-    [request]
-    object = "Phalcon\Http\Response"
-    ...
+    ```yml
+    request:
+        object: "Phalcon\Http\Response"
     ```
 
 3. Через провайдера сервисов. Который должен реализовывать интерфейс ```GetSky\Phalcon\AutoloadServices\Provider```. По замыслу, провайдеры являются посредниками для регистрации анонимных функций в контейнере зависимостей, но при этом имеют возможность реализовать любой другой способ, который поддерживает Phalcon. 
     
-    ```ini
-    ...
-    [route]
-    provider = "RouteProvider"
-    ...    
+    ```yml
+    route:
+        provider: "RouteProvider"
     ```
     
 Для второго и третьего способа возможно указать какие аргументы будут переданы в конструктор и вызывать методы после его создания и до помещения в DI. Ниже приведен пример, как это можно реализовать на ini:
 
-```ini
-[ferst-service]
-provider = "SomeNamespace\FerstClass"
-arg.0.service = "config"
-arg.1.var = "24"
-arg.2.di = 1
-arg.3.s-service = "shared-service"
-arg.4.object.object = "SoeNamespace\SecondClass"
-arg.4.object.arg.0.var = "42"
-arg.4.object.call.0.method = "run"
+```yml
+first-service:
+    provider: "SomeNamespace\FirstClass"
+    arg:
+        - service: "config"
+        - var: 24
+        - di: true
+        - s-service: "shared-service"
+        - object: 
+            object: "SoeNamespace\SecondClass"
+            arg:
+                - var: 42
+                - method: "run"
 ```
 
-В приведенном выше примере, мы регистрируем сервис ```SomeNamespace\FerstClass``` под именем ```fest-service``` и передаем 5 аргументов: сервис ```config```, переменную ```24```, контейнер зависимостей (объект реализующий интерфейс ```DiInterface```, который был передан в конструктор ```Botstrap``` в файле ```/public/index.php```), сервис ```shared-services``` вызванный через метод ```getShared``` и экземпляр класса ```SomeNamespace\SecondClass```, который сначала создается с передачей в конструктор аргумента ```42```, и вызовом метода ```run```, а уже затем передается в конструктор нашего сервиса пятым параметром.
+В приведенном выше примере, мы регистрируем сервис ```SomeNamespace\FirstClass``` под именем ```first-service``` и передаем 5 аргументов: сервис ```config```, переменную ```24```, контейнер зависимостей (объект реализующий интерфейс ```DiInterface```, который был передан в конструктор ```Botstrap``` в файле ```/public/index.php```), сервис ```shared-services``` вызванный через метод ```getShared``` и экземпляр класса ```SomeNamespace\SecondClass```, который сначала создается с передачей в конструктор аргумента ```42```, и вызовом метода ```run```, а уже затем передается в конструктор нашего сервиса пятым параметром.
 
 Запуск тестов Codeception
 -------------------------

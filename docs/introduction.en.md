@@ -318,8 +318,6 @@ Pherlin use universal loader for configuration files, which allows:
 - merge configuration files;
 - replace variable ```{environment}``` on application environment.
 
-It should be noted that the use of yaml without installed extension PECL - [yaml](http://pecl.php.net/package/yaml), may significantly slow down the application due to the fact that in the absence of expansion package is used ```symfony/yaml` ``.
-
 The loader is a individual package [ConfigLoader]((https://github.com/JimmDigrizli/phalcon-config-loader) (```getsky/phalcon-config-loader```), which is loaded with the help of composer. In order to start using it, you must create instance of the class ```ConfigLoader``` with transfer of current environment, or get it from the DI (service `` `config-loader ```).
 
 ```php
@@ -336,26 +334,31 @@ Configuring Services
 --------------------
 Pherlin uses a configuration file for registration services in the DI. Configuration services should be located in configuraion of application. That's how it is implemented by default:
 
-```ini
-# /app/config/config.ini
-dependencies = %res:../app/config/services.ini
+```yml
+dependencies:
+    %res%: ../app/config/services.yml
 ```
 
-```ini
-# /app/config/services.ini
 
-[router]
-provider = "GetSky\Phalcon\Provider\RouterProvider"
-arg.0.service = "config"
+```yml
+# /app/config/services.yml
+router:
+    provider: GetSky\Phalcon\Provider\RouterProvider
+    arg:
+        - service: config
 
-[callsample]
-object = "CallService"
-call.0.method = "run"
-call.0.arg.0.var = "24"
+url:
+    provider: GetSky\Phalcon\Provider\UrlProvider
+    arg:
+        - service: config
 
-[session]
-string = "GetSky\Phalcon\Provider\SessionProvider"
-shared = true
+session:
+    provider: GetSky\Phalcon\Provider\SessionProvider
+
+logger:
+    provider: GetSky\Phalcon\Provider\LoggerProvider
+    arg:
+        - service: "config"
 ```
 
 The ability to initialize services through configuration files in Pherlin provided by means of component [AutoloadServices](https://github.com/JimmDiGrizli/phalcon-autoload-services).
@@ -364,44 +367,43 @@ There are three ways to register services:
 
 1. By the class name. This method does not allow to pass arguments to a constructor or adjust parameters.
     
-    ```ini
-    ...
-    [response]
-    string = "Phalcon\Http\Response"
-    ...  
+    ```yml
+    response:
+        string: "Phalcon\Http\Response"
     ```
     
 2. Registering an instance directly. When using this method the container is placed dependency already finished object.
-    ```php
-    ...
-    [request]
-    object = "Phalcon\Http\Response"
-    ...
+    
+    ```yml
+    request:
+        object: "Phalcon\Http\Response"
     ```
 
 3. Through the service provider. Which must implement the interface ```GetSky\Phalcon\AutoloadServices\Provider```. According to the plan, providers are intermediaries for registration of anonymous functions in the container dependency, but have the opportunity to realize any other way that supports Phalcon.
-    ```ini
-    ...
-    [route]
-    provider = "RouteProvider"
-    ...    
+    
+    ```yml
+    route:
+        provider: "RouteProvider"
     ```
     
 For the second and third method possible to specify which arguments are passed to the constructor and invoke methods since its inception and prior to placement in the DI. Below is an example of how it can be implemented on the ini:
 
-```ini
-[ferst-service]
-provider = "SomeNamespace\FerstClass"
-arg.0.service = "config"
-arg.1.var = "24"
-arg.2.di = 1
-arg.3.s-service = "shared-service"
-arg.4.object.object = "SoeNamespace\SecondClass"
-arg.4.object.arg.0.var = "42"
-arg.4.object.call.0.method = "run"
+```yml
+first-service:
+    provider: "SomeNamespace\FirstClass"
+    arg:
+        - service: "config"
+        - var: 24
+        - di: true
+        - s-service: "shared-service"
+        - object: 
+            object: "SoeNamespace\SecondClass"
+            arg:
+                - var: 42
+                - method: "run"
 ```
 
-In the above example, we register the service ```SomeNamespace\FerstClass``` under the name ```fest-service ``` and pass 5 arguments: the service ```config```, variable ```24```, DI (object implements ```DiInterface```, which was passed to the constructor ```Botstrap ``` in file ```/public/index.php```), service ```shared-services``` caused by the method ``` getShared``` and an instance of ```SomeNamespace\SecondClass```, which was first created with transfer ```42``` and calling ```run```.
+In the above example, we register the service ```SomeNamespace\FirstClass``` under the name ```first-service ``` and pass 5 arguments: the service ```config```, variable ```24```, DI (object implements ```DiInterface```, which was passed to the constructor ```Botstrap ``` in file ```/public/index.php```), service ```shared-services``` caused by the method ``` getShared``` and an instance of ```SomeNamespace\SecondClass```, which was first created with transfer ```42``` and calling ```run```.
 
 Running Codeception
 -------------------
