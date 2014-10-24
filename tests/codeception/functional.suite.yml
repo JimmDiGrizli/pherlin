@@ -11,6 +11,6 @@ modules:
     enabled: [Phalcon1, Filesystem, TestHelper]
     config:
             Phalcon1:
-                bootstrap: ../public/index.php
+                bootstrap: ../../public/codeception.php
                 cleanup: true
                 savepoints: true
