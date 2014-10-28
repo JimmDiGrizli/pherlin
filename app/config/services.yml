@@ -14,4 +14,4 @@ session:
 logger:
     provider: GetSky\Phalcon\Provider\LoggerProvider
     arg:
-        - service: "config"
+        - service: config
