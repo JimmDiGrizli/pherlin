@@ -1,4 +1,2 @@
-%res%: ../app/config/config.yml
-
 dependencies:
-    %res%: ../app/config/services_dev.yml
+    '%res%': ../app/config/services_dev.yml

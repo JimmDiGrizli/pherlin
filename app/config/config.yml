@@ -1,5 +1,5 @@
 dependencies:
-    %res%: ../app/config/services.yml
+    '%res%': ../app/config/services.yml
 
 bootstrap:
     path: ../src/
