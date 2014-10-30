@@ -12,9 +12,9 @@
     "require": {
         "ext-phalcon": ">=1.2.4,<2",
 
-        "getsky/phalcon-bootstrap": "1.4.x",
+        "getsky/phalcon-bootstrap": "1.4.*",
         "getsky/phalcon-skeleton-provider": ">=1.0.2",
-        "getsky/pherlin-demo-module": "1.0.x",
+        "getsky/pherlin-demo-module": "1.0.*",
         "getsky/pretty-exceptions": "dev-master",
         "maximebf/debugbar": "1.*"
     },
