@@ -110,7 +110,7 @@ $app = new Bootstrap(new FactoryDefault(),'prod');
     class Module extends ModuleBootstrap
     {   
         const DIR = __DIR__;
-	const NAME = "ModuleName"
+        const NAME = "ModuleName";
         //const CONFIG = '/Resources/options.yml';
         //const SERVICES = '/Resources/services.yml';
     }
