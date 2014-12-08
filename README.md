@@ -1,9 +1,6 @@
 Pherlin
 =======
- ![versioneye](https://www.versioneye.com/user/projects/537c801c14c1582e370008d0/badge.svg?style=flat)
- 
-[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/JimmDiGrizli/pherlin?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
- [![Stories in Ready](https://badge.waffle.io/jimmdigrizli/pherlin.png?label=ready&title=Ready)](http://waffle.io/jimmdigrizli/pherlin)
+[![Dependency Status](https://www.versioneye.com/user/projects/537c801c14c1582e370008d0/badge.svg?style=flat)](https://www.versioneye.com/user/projects/537c801c14c1582e370008d0) [![Stories in Ready](https://badge.waffle.io/jimmdigrizli/pherlin.png?label=ready&title=Ready)](http://waffle.io/jimmdigrizli/pherlin)
 
 What is Pherlin?
 ----------------
